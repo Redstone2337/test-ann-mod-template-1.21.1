@@ -10,7 +10,7 @@ public class ModKeys {
     public static KeyBinding ANNOUNCEMENT_KEY = new KeyBinding(
             "key.tam.open_config",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_C,
+            GLFW.GLFW_KEY_V,
             "category.tam"
     );
 
