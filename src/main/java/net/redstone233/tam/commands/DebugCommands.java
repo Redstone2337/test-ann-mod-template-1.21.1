@@ -6,14 +6,17 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.redstone233.tam.config.ConfigManager;
 import net.redstone233.tam.manager.AnnouncementManager;
 import net.redstone233.tam.network.NetworkHandler;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static net.minecraft.server.command.CommandManager.*;
 
@@ -64,32 +67,52 @@ public class DebugCommands {
                                         )
                                 )
                         )
+                        .then(literal("player")
+                                .then(literal("reset")
+                                        .executes(DebugCommands::resetPlayerAnnouncement)
+                                        .then(argument("player", EntityArgumentType.player())
+                                                .executes(DebugCommands::resetOtherPlayerAnnouncement)))
+                                .then(literal("info")
+                                        .executes(DebugCommands::showPlayerAnnouncementInfo))
+                        )
+                        .then(literal("hash")
+                                .then(literal("show")
+                                        .executes(DebugCommands::showHashInfo))
+                                .then(literal("forceUpdate")
+                                        .executes(DebugCommands::forceUpdateHash))
+                        )
                 )
         );
     }
 
     private static int showPonderScreen(CommandContext<ServerCommandSource> context, boolean isShow) {
         ServerCommandSource source = context.getSource();
-        if (isShow) {
-            ConfigManager.setPonderScreen(isShow);
-            source.sendFeedback(() -> Text.literal("§a已开启ponder界面"), false);
-            return 1;
-        } else {
-            source.sendError(Text.literal("§c参数错误，请输入true或false"));
-            return 0;
-        }
+
+        // 直接设置值，不需要条件判断
+        ConfigManager.setPonderScreen(isShow);
+        ConfigManager.saveConfig();
+
+        source.sendFeedback(() -> Text.literal("§aPonder界面显示已" + (isShow ? "开启" : "关闭")), false);
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int showAnnouncement(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
 
-        if (source.getPlayer() == null) {
+        if (player == null) {
             source.sendError(Text.literal("该命令只能由玩家执行"));
             return 0;
         }
 
-        AnnouncementManager.forceShowToPlayer(source.getPlayer());
+        // 先显示调试信息
+        String debugInfo = AnnouncementManager.getDebugInfo(player);
+        source.sendFeedback(() -> Text.literal("§e公告状态: " + debugInfo), false);
+
+        // 强制显示公告
+        AnnouncementManager.forceShowToPlayer(player);
         source.sendFeedback(() -> Text.literal("§a已向您显示公告"), false);
+
         return Command.SINGLE_SUCCESS;
     }
 
@@ -149,7 +172,7 @@ public class DebugCommands {
     private static int clearContent(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
 
-        ConfigManager.setAnnouncementContent(Arrays.asList("公告内容已清空"));
+        ConfigManager.setAnnouncementContent(List.of("公告内容已清空"));
         source.sendFeedback(() -> Text.literal("§a公告内容已清空"), false);
         return Command.SINGLE_SUCCESS;
     }
@@ -205,15 +228,119 @@ public class DebugCommands {
         ServerCommandSource source = context.getSource();
 
         String hash = ConfigManager.getConfigHash();
+        String lastHash = ConfigManager.getLastDisplayedHash();
         boolean hasChanged = ConfigManager.hasConfigChanged();
 
         source.sendFeedback(() -> Text.literal("§6=== 公告配置信息 ==="), false);
-        source.sendFeedback(() -> Text.literal("§e配置哈希: §f" + hash), false);
+        source.sendFeedback(() -> Text.literal("§e当前配置哈希: §f" + hash), false);
+        source.sendFeedback(() -> Text.literal("§e上次显示哈希: §f" + lastHash), false);
         source.sendFeedback(() -> Text.literal("§e配置是否变化: §f" + hasChanged), false);
         source.sendFeedback(() -> Text.literal("§e主标题: §f" + ConfigManager.getMainTitle()), false);
+        source.sendFeedback(() -> Text.literal("§e副标题: §f" + ConfigManager.getSubTitle()), false);
         source.sendFeedback(() -> Text.literal("§e内容行数: §f" + ConfigManager.getAnnouncementContent().size()), false);
         source.sendFeedback(() -> Text.literal("§e显示图标: §f" + ConfigManager.shouldShowIcon()), false);
         source.sendFeedback(() -> Text.literal("§e自定义背景: §f" + ConfigManager.useCustomAnnouncementBackground()), false);
+        source.sendFeedback(() -> Text.literal("§ePonder界面: §f" + ConfigManager.showPonderScreen()), false);
+
+        // 显示前3行内容作为预览
+        List<String> content = ConfigManager.getAnnouncementContent();
+        source.sendFeedback(() -> Text.literal("§e内容预览:"), false);
+        for (int i = 0; i < Math.min(3, content.size()); i++) {
+            final String line = content.get(i);
+            source.sendFeedback(() -> Text.literal("§f  " + line), false);
+        }
+        if (content.size() > 3) {
+            source.sendFeedback(() -> Text.literal("§e  ... 还有 " + (content.size() - 3) + " 行"), false);
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * 重置当前玩家的公告观看记录
+     */
+    private static int resetPlayerAnnouncement(CommandContext<ServerCommandSource> context) {
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
+
+        if (player == null) {
+            source.sendError(Text.literal("该命令只能由玩家执行"));
+            return 0;
+        }
+
+        AnnouncementManager.resetPlayerAnnouncement(player);
+        source.sendFeedback(() -> Text.literal("§a已重置您的公告观看记录，下次进入将重新显示公告"), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * 重置其他玩家的公告观看记录
+     */
+    private static int resetOtherPlayerAnnouncement(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity targetPlayer = EntityArgumentType.getPlayer(context, "player");
+
+        AnnouncementManager.resetPlayerAnnouncement(targetPlayer);
+        source.sendFeedback(() -> Text.literal("§a已重置玩家 " + targetPlayer.getGameProfile().getName() + " 的公告观看记录"), false);
+
+        // 通知目标玩家
+        if (!Objects.equals(source.getPlayer(), targetPlayer)) {
+            targetPlayer.sendMessage(Text.literal("§e管理员已重置您的公告观看记录，下次进入将重新显示公告"));
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * 显示当前玩家的公告调试信息
+     */
+    private static int showPlayerAnnouncementInfo(CommandContext<ServerCommandSource> context) {
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
+
+        if (player == null) {
+            source.sendError(Text.literal("该命令只能由玩家执行"));
+            return 0;
+        }
+
+        String debugInfo = AnnouncementManager.getDebugInfo(player);
+        source.sendFeedback(() -> Text.literal("§6=== 玩家公告状态 ==="), false);
+        source.sendFeedback(() -> Text.literal("§e" + debugInfo), false);
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * 显示哈希相关信息
+     */
+    private static int showHashInfo(CommandContext<ServerCommandSource> context) {
+        ServerCommandSource source = context.getSource();
+
+        String currentHash = ConfigManager.getConfigHash();
+        String lastDisplayedHash = ConfigManager.getLastDisplayedHash();
+        boolean hasChanged = ConfigManager.hasConfigChanged();
+
+        source.sendFeedback(() -> Text.literal("§6=== 哈希信息 ==="), false);
+        source.sendFeedback(() -> Text.literal("§e当前配置哈希: §f" + currentHash), false);
+        source.sendFeedback(() -> Text.literal("§e上次显示哈希: §f" + lastDisplayedHash), false);
+        source.sendFeedback(() -> Text.literal("§e配置是否变化: §f" + hasChanged), false);
+        source.sendFeedback(() -> Text.literal("§e稳定哈希算法: §a已启用"), false);
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * 强制更新哈希记录
+     */
+    private static int forceUpdateHash(CommandContext<ServerCommandSource> context) {
+        ServerCommandSource source = context.getSource();
+
+        String currentHash = ConfigManager.getConfigHash();
+        ConfigManager.setLastDisplayedHash(currentHash);
+        ConfigManager.saveConfig();
+
+        source.sendFeedback(() -> Text.literal("§a已强制更新哈希记录为当前配置"), false);
+        source.sendFeedback(() -> Text.literal("§e新哈希值: §f" + currentHash), false);
 
         return Command.SINGLE_SUCCESS;
     }

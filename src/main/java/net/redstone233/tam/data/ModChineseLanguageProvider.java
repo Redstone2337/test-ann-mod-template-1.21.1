@@ -46,6 +46,7 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("option.tam.use_custom_background", "使用自定义背景");
         translationBuilder.add("option.tam.background_path", "背景路径");
         translationBuilder.add("option.tam.announcement_content", "公告内容");
+        translationBuilder.add("option.tam.show_ponder", "显示思索界面");
 
         // 工具提示
         translationBuilder.add("tooltip.tam.show_on_world_enter", "是否在玩家首次进入世界时显示公告");
@@ -68,6 +69,7 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tooltip.tam.use_custom_background", "是否使用自定义背景图片");
         translationBuilder.add("tooltip.tam.background_path", "背景图片资源的路径");
         translationBuilder.add("tooltip.tam.announcement_content", "公告的具体内容，支持多行和颜色代码");
+        translationBuilder.add("tooltip.tam.show_ponder", "是否为玩家显示思索界面");
 
         // 描述
         translationBuilder.add("description.tam.announcement_content", "每行一条公告内容，支持Minecraft颜色代码 (§)");

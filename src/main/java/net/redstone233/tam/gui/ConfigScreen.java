@@ -48,6 +48,12 @@ public class ConfigScreen {
                 .setTooltip(Text.translatable("tooltip.tam.debug_mode"))
                 .setSaveConsumer(ConfigManager::setDebugMode)
                 .build());
+        general.addEntry(entryBuilder.startBooleanToggle(Text.translatable("option.tam.show_ponder"),
+                        ConfigManager.showPonderScreen())
+                        .setDefaultValue(true)
+                        .setTooltip(Text.translatable("tooltip.tam.show_ponder"))
+                        .setSaveConsumer(ConfigManager::setPonderScreen)
+                .build());
     }
 
     private static void setupDisplayCategory(ConfigBuilder builder, ConfigEntryBuilder entryBuilder) {
