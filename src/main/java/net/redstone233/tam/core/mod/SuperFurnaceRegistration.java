@@ -11,21 +11,21 @@ public class SuperFurnaceRegistration {
     public static void registerAll(PonderSceneRegistrationHelper<Identifier> helper) {
         // 注册超级熔炉场景
         helper.addStoryBoard(
-                Identifier.of(TestAnnMod.MOD_ID,"super_furnace"),
+                Identifier.ofVanilla("furnace"),
                 "super_furnace_structure",
                 SuperFurnaceScene::superFurnace
         ).highlightAllTags();
 
         // 注册超级高炉场景
         helper.addStoryBoard(
-                Identifier.of(TestAnnMod.MOD_ID,"super_blast_furnace"),
+                Identifier.ofVanilla("blast_furnace"),
                 "super_blast_furnace_structure",
                 SuperBlastFurnaceScene::superBlastFurnace
         ).highlightAllTags();
 
         // 注册超级烟熏炉场景
         helper.addStoryBoard(
-                Identifier.of(TestAnnMod.MOD_ID,"super_smoker"),
+                Identifier.ofVanilla("smoker"),
                 "super_smoker_structure",
                 SuperSmokerScene::superSmoker
         ).highlightAllTags();

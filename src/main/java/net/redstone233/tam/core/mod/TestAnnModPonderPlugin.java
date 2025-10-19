@@ -4,13 +4,14 @@ import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
 import net.minecraft.util.Identifier;
+import net.redstone233.tam.TestAnnMod;
 import net.redstone233.tam.ponder.tags.ModPonderTags;
 import org.jetbrains.annotations.NotNull;
 
 public class TestAnnModPonderPlugin implements PonderPlugin {
     @Override
     public @NotNull String getModId() {
-        return "";
+        return TestAnnMod.MOD_ID;
     }
 
     @Override
