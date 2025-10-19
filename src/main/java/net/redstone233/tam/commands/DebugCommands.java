@@ -2,6 +2,7 @@ package net.redstone233.tam.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -9,6 +10,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.redstone233.tam.config.ConfigManager;
 import net.redstone233.tam.manager.AnnouncementManager;
+import net.redstone233.tam.network.NetworkHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,7 +55,29 @@ public class DebugCommands {
                                 .executes(DebugCommands::resetConfig))
                         .then(literal("info")
                                 .executes(DebugCommands::showConfigInfo))
-                ));
+                        .then(literal("ponder")
+                                .then(argument("shown", BoolArgumentType.bool())
+                                        .executes(
+                                                run -> showPonderScreen(
+                                                        run, BoolArgumentType.getBool(run, "shown")
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+    }
+
+    private static int showPonderScreen(CommandContext<ServerCommandSource> context, boolean isShow) {
+        ServerCommandSource source = context.getSource();
+        if (isShow) {
+            ConfigManager.setPonderScreen(isShow);
+            source.sendFeedback(() -> Text.literal("§a已开启ponder界面"), false);
+            return 1;
+        } else {
+            source.sendError(Text.literal("§c参数错误，请输入true或false"));
+            return 0;
+        }
     }
 
     private static int showAnnouncement(CommandContext<ServerCommandSource> context) {
@@ -77,7 +101,7 @@ public class DebugCommands {
             return 0;
         }
 
-        net.redstone233.tam.network.NetworkHandler.sendToAllPlayers(source.getServer());
+        NetworkHandler.sendToAllPlayers(source.getServer());
         source.sendFeedback(() -> Text.literal("§a已向所有在线玩家显示公告"), false);
         return Command.SINGLE_SUCCESS;
     }

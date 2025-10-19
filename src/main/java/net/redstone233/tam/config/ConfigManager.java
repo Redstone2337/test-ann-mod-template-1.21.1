@@ -18,6 +18,10 @@ public class ConfigManager {
         return ClientConfig.DEBUG_MODE.get();
     }
 
+    public static boolean showPonderScreen() {
+        return ClientConfig.IS_ON_PONDER.get();
+    }
+
     // ==================== 显示设置 ====================
     public static String getMainTitle() {
         return ClientConfig.MAIN_TITLE.get();
@@ -185,6 +189,7 @@ public class ConfigManager {
         config.scrollSpeed = getScrollSpeed();
         config.useCustomAnnouncementBackground = useCustomAnnouncementBackground();
         config.announcementBackgroundPath = getAnnouncementBackgroundPath();
+        config.showPonderScreen = showPonderScreen();
 
         return config;
     }
@@ -216,6 +221,7 @@ public class ConfigManager {
             useCustomAnnouncementBackground();
             getAnnouncementBackgroundPath();
             getLastDisplayedHash();
+            showPonderScreen();
 
             return true;
         } catch (Exception e) {
@@ -337,6 +343,11 @@ public class ConfigManager {
         ClientConfig.LAST_DISPLAYED_HASH.set(hash);
     }
 
+    public static void setPonderScreen(boolean value) {
+        ClientConfig.IS_ON_PONDER.set(value);
+    }
+
+
     /**
      * 保存配置到文件
      */
@@ -373,6 +384,7 @@ public class ConfigManager {
         setIconTextSpacing(10);
         setUseCustomAnnouncementBackground(false);
         setAnnouncementBackgroundPath("announcement_mod:textures/gui/background.png");
+        setPonderScreen(true);
 
         // 重置公告内容
         setAnnouncementContent(Arrays.asList(

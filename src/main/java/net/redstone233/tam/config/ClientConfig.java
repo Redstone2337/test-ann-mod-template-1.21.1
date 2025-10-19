@@ -23,6 +23,10 @@ public class ClientConfig {
                 .comment("启用调试模式（显示UI边界等辅助信息）")
                 .define("debugMode", false);
 
+        IS_ON_PONDER = ClientConfig.BUILDER
+                .comment("是否启用思索提醒")
+                .define("IsOnPonder", true);
+
         ClientConfig.BUILDER.pop();
     }
 
@@ -159,6 +163,7 @@ public class ClientConfig {
     // 配置字段声明
     public static ModConfigSpec.BooleanValue SHOW_ON_WORLD_ENTER;
     public static ModConfigSpec.BooleanValue DEBUG_MODE;
+    public static ModConfigSpec.BooleanValue IS_ON_PONDER;
     public static ModConfigSpec.ConfigValue<String> MAIN_TITLE;
     public static ModConfigSpec.ConfigValue<String> SUB_TITLE;
     public static ModConfigSpec.IntValue SCROLL_SPEED;

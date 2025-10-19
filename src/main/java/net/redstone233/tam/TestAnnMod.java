@@ -1,5 +1,6 @@
 package net.redstone233.tam;
 
+import net.createmod.ponder.foundation.PonderIndex;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -8,8 +9,14 @@ import net.minecraft.util.Identifier;
 import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
+import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
+import net.redstone233.tam.core.mod.TestAnnModPonderPlugin;
 import net.redstone233.tam.network.AnnouncementPayload;
 import net.redstone233.tam.network.NetworkHandler;
+import net.redstone233.tam.ponder.SuperBlastFurnaceScene;
+import net.redstone233.tam.ponder.SuperFurnaceScene;
+import net.redstone233.tam.ponder.SuperSmokerScene;
+import net.redstone233.tam.ponder.tags.ModPonderTags;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +52,21 @@ public class TestAnnMod implements ModInitializer {
         // 注册人家加入事件
         PlayerJoinEvent.init();
         LOGGER.info("玩家加入事件初始化成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        SuperFurnaceScene.init();
+        LOGGER.info("超级熔炉思索初始化完成，耗时{}ms", System.currentTimeMillis() - startTime);
+
+        SuperBlastFurnaceScene.init();
+        LOGGER.info("超级高炉思索初始化完成，耗时{}ms", System.currentTimeMillis() - startTime);
+
+        SuperSmokerScene.init();
+        LOGGER.info("超级烟熏炉思索初始化完成，耗时{}ms", System.currentTimeMillis() - startTime);
+
+        ModPonderTags.init();
+        LOGGER.info("思索标签初始化完成，耗时{}ms", System.currentTimeMillis() - startTime);
+
+        SuperFurnaceRegistration.init();
+        LOGGER.info("超级熔炼系统注册初始化完成，耗时{}ms", System.currentTimeMillis() - startTime);
 
         LOGGER.info("Test Announcement Mod initialized successfully");
         LOGGER.info("模组内容初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);

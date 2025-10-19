@@ -21,6 +21,7 @@ public class AnnouncementConfig {
     public double scrollSpeed;
     public boolean useCustomAnnouncementBackground;
     public String announcementBackgroundPath;
+    public boolean showPonderScreen;
 
     public AnnouncementConfig() {
         // 空构造函数用于反序列化
@@ -54,7 +55,7 @@ public class AnnouncementConfig {
         sb.append(mainTitle).append(subTitle).append(confirmButtonText)
                 .append(submitButtonText).append(buttonLink).append(showIcon)
                 .append(iconPath).append(useCustomRGB).append(useCustomAnnouncementBackground)
-                .append(announcementBackgroundPath);
+                .append(announcementBackgroundPath).append(showPonderScreen);
 
         for (String line : announcementContent) {
             sb.append(line);

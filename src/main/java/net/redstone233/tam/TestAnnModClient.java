@@ -1,9 +1,12 @@
 package net.redstone233.tam;
 
+import net.createmod.ponder.foundation.PonderIndex;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.text.Text;
+import net.redstone233.tam.config.ConfigManager;
 import net.redstone233.tam.core.keys.ModKeys;
+import net.redstone233.tam.core.mod.TestAnnModPonderPlugin;
 import net.redstone233.tam.gui.ConfigScreen;
 import net.redstone233.tam.network.NetworkHandler;
 
@@ -20,6 +23,14 @@ public class TestAnnModClient implements ClientModInitializer {
         TestAnnMod.LOGGER.info("Register network handlers in {}ms", System.currentTimeMillis() - start);
         // 数据通信
         registerKeys();
+        TestAnnMod.LOGGER.info("Register keys in {}ms", System.currentTimeMillis() - start);
+
+        // 注册 Ponder
+        if (ConfigManager.showPonderScreen()) {
+            PonderIndex.addPlugin(new TestAnnModPonderPlugin());
+            TestAnnMod.LOGGER.info("Register ponder plugin in {}ms", System.currentTimeMillis() - start);
+        }
+
         TestAnnMod.LOGGER.info("客户端部分注册完成，耗时 {}ms", System.currentTimeMillis() - start);
     }
 

@@ -101,5 +101,36 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("commands.tam.debug.icon.disabled", "disabled");
         translationBuilder.add("commands.tam.debug.background.enabled", "enabled");
         translationBuilder.add("commands.tam.debug.background.disabled", "disabled");
+
+        // Super Furnace
+        translationBuilder.add("rem.ponder.super_furnace.header", "Super Furnace Construction Guide");
+        translationBuilder.add("rem.ponder.super_furnace.text_1", "Super Furnace: A special structure that greatly improves smelting efficiency");
+        translationBuilder.add("rem.ponder.super_furnace.text_2", "Build Layer 1: 3x3 stone base");
+        translationBuilder.add("rem.ponder.super_furnace.text_3", "Build Layer 2: Note the center position");
+        translationBuilder.add("rem.ponder.super_furnace.text_4", "Place a furnace in the center");
+        translationBuilder.add("rem.ponder.super_furnace.text_5", "Build Layer 3: 3x3 stone top cover");
+        translationBuilder.add("rem.ponder.super_furnace.text_6", "Done! The Super Furnace significantly boosts smelting speed");
+
+        // Super Blast Furnace
+        translationBuilder.add("rem.ponder.super_blast_furnace.header", "Super Blast Furnace Construction Guide");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_1", "Super Blast Furnace: A special structure for highly efficient ore smelting");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_2", "Layer 1: 3x3 iron block base");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_3", "Layer 2: Surround the blast furnace with iron blocks");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_4", "Place a blast furnace in the center");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_5", "Layer 3: 3x3 smooth stone top cover");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_6", "Compared to a regular blast furnace, the Super Blast Furnace is far more efficient");
+
+        // Super Smoker
+        translationBuilder.add("rem.ponder.super_smoker.header", "Super Smoker Construction Guide");
+        translationBuilder.add("rem.ponder.super_smoker.text_1", "Super Smoker: A special structure for quickly smoking food");
+        translationBuilder.add("rem.ponder.super_smoker.text_2", "Layer 1: Alternate coal blocks and logs in a cross pattern");
+        translationBuilder.add("rem.ponder.super_smoker.text_3", "Layer 2: Keep the cross pattern, place a smoker in the center");
+        translationBuilder.add("rem.ponder.super_smoker.text_4", "Place a smoker in the center");
+        translationBuilder.add("rem.ponder.super_smoker.text_5", "Layer 3: Mirror Layer 1 exactly");
+        translationBuilder.add("rem.ponder.super_smoker.text_6", "Done! The Super Smoker greatly increases food smoking speed");
+
+        // New category tags
+        translationBuilder.add("rem.furnace.tag.title", "Super Furnaces");
+        translationBuilder.add("rem.furnace.tag.description", "Construction guides for high-efficiency smelting setups");
     }
 }
