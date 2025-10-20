@@ -3,6 +3,7 @@ package net.redstone233.tam.network;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.redstone233.tam.config.AnnouncementConfig;
 import net.redstone233.tam.config.ConfigManager;
@@ -36,7 +37,7 @@ public class NetworkHandler {
     }
 
     // 发送给所有在线玩家
-    public static void sendToAllPlayers(net.minecraft.server.MinecraftServer server) {
+    public static void sendToAllPlayers(MinecraftServer server) {
         AnnouncementConfig config = ConfigManager.createAnnouncementConfig();
         if (config.isValid()) {
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
