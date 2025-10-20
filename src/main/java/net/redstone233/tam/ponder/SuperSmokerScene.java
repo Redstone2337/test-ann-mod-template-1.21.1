@@ -34,26 +34,51 @@ public class SuperSmokerScene {
                 .pointAt(util.vector().centerOf(2, 1, 2));
         scene.idle(90);
 
-        // 第3层：与第1层对称（从上至下开始）
-        scene.overlay().showText(60)
+        // 第1层：十字形结构说明（从下至上开始）
+        scene.overlay().showText(70)
                 .colored(PonderPalette.BLUE)
-                .text("第3层：与第1层完全对称")
-                .pointAt(util.vector().centerOf(2, 3, 2));
-        scene.idle(70);
+                .text("第1层：煤炭块与木头十字交错排列")
+                .pointAt(util.vector().centerOf(2, 1, 2));
+        scene.idle(80);
 
-        // 快速显示第3层并添加粒子效果
-        for (int x = 1; x <= 3; x++) {
-            for (int z = 1; z <= 3; z++) {
-                scene.world().showSection(util.select().position(x, 3, z), Direction.UP);
-                Vec3d pos = util.vector().centerOf(x, 3, z);
-                scene.effects().emitParticles(
-                        pos,
-                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
-                        1, 1
-                );
-            }
+        // 显示第1层十字结构 (位于5x5底座中央的3x3区域)
+        // 先显示四个角的煤炭块
+        BlockPos[] coalPositions1 = {
+                util.grid().at(1,1,1), util.grid().at(1,1,3),
+                util.grid().at(3,1,1), util.grid().at(3,1,3)
+        };
+
+        // 遍历并显示所有煤炭块位置，添加烟雾粒子效果
+        for (BlockPos pos : coalPositions1) {
+            scene.world().showSection(util.select().position(pos), Direction.UP);
+            Vec3d centerPos = util.vector().centerOf(pos);
+            scene.effects().emitParticles(
+                    centerPos,
+                    scene.effects().simpleParticleEmitter(ParticleTypes.SMOKE, new Vec3d(0, 0.1, 0)),
+                    3, 2
+            );
+            scene.idle(5);
         }
-        scene.idle(30);
+        scene.idle(10);
+
+        // 显示十字形的木头
+        BlockPos[] woodPositions1 = {
+                util.grid().at(2,1,1), util.grid().at(1,1,2),
+                util.grid().at(2,1,3), util.grid().at(3,1,2), util.grid().at(2,1,2)
+        };
+
+        // 遍历并显示所有木头位置，添加烟雾粒子效果
+        for (BlockPos pos : woodPositions1) {
+            scene.world().showSection(util.select().position(pos), Direction.UP);
+            Vec3d centerPos = util.vector().centerOf(pos);
+            scene.effects().emitParticles(
+                    centerPos,
+                    scene.effects().simpleParticleEmitter(ParticleTypes.CAMPFIRE_COSY_SMOKE, new Vec3d(0, 0.1, 0)),
+                    2, 1
+            );
+            scene.idle(3);
+        }
+        scene.idle(20);
 
         // 第2层建造说明
         scene.overlay().showText(60)
@@ -117,51 +142,26 @@ public class SuperSmokerScene {
         scene.world().showSection(util.select().position(2, 2, 2), Direction.UP);
         scene.idle(20);
 
-        // 第1层：十字形结构说明
-        scene.overlay().showText(70)
+        // 第3层：与第1层对称
+        scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("第1层：煤炭块与木头十字交错排列")
-                .pointAt(util.vector().centerOf(2, 1, 2));
-        scene.idle(80);
+                .text("第3层：与第1层完全对称")
+                .pointAt(util.vector().centerOf(2, 3, 2));
+        scene.idle(70);
 
-        // 显示第1层十字结构 (位于5x5底座中央的3x3区域)
-        // 先显示四个角的煤炭块
-        BlockPos[] coalPositions1 = {
-                util.grid().at(1,1,1), util.grid().at(1,1,3),
-                util.grid().at(3,1,1), util.grid().at(3,1,3)
-        };
-
-        // 遍历并显示所有煤炭块位置，添加烟雾粒子效果
-        for (BlockPos pos : coalPositions1) {
-            scene.world().showSection(util.select().position(pos), Direction.UP);
-            Vec3d centerPos = util.vector().centerOf(pos);
-            scene.effects().emitParticles(
-                    centerPos,
-                    scene.effects().simpleParticleEmitter(ParticleTypes.SMOKE, new Vec3d(0, 0.1, 0)),
-                    3, 2
-            );
-            scene.idle(5);
+        // 快速显示第3层并添加粒子效果
+        for (int x = 1; x <= 3; x++) {
+            for (int z = 1; z <= 3; z++) {
+                scene.world().showSection(util.select().position(x, 3, z), Direction.UP);
+                Vec3d pos = util.vector().centerOf(x, 3, z);
+                scene.effects().emitParticles(
+                        pos,
+                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
+                        1, 1
+                );
+            }
         }
-        scene.idle(10);
-
-        // 显示十字形的木头
-        BlockPos[] woodPositions1 = {
-                util.grid().at(2,1,1), util.grid().at(1,1,2),
-                util.grid().at(2,1,3), util.grid().at(3,1,2), util.grid().at(2,1,2)
-        };
-
-        // 遍历并显示所有木头位置，添加烟雾粒子效果
-        for (BlockPos pos : woodPositions1) {
-            scene.world().showSection(util.select().position(pos), Direction.UP);
-            Vec3d centerPos = util.vector().centerOf(pos);
-            scene.effects().emitParticles(
-                    centerPos,
-                    scene.effects().simpleParticleEmitter(ParticleTypes.CAMPFIRE_COSY_SMOKE, new Vec3d(0, 0.1, 0)),
-                    2, 1
-            );
-            scene.idle(3);
-        }
-        scene.idle(20);
+        scene.idle(30);
 
         // 显示整个建筑结构
         scene.world().showSection(util.select().fromTo(1, 1, 1, 3, 3, 3), Direction.UP);

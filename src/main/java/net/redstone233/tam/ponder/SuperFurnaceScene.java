@@ -35,23 +35,23 @@ public class SuperFurnaceScene {
                 .pointAt(util.vector().centerOf(2, 1, 2));
         scene.idle(90);
 
-        // 第3层建造过程（从上至下）
+        // 第1层建造过程（从下至上开始）
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("建造第3层：3x3石头顶盖")
-                .pointAt(util.vector().centerOf(2, 3, 2));
+                .text("开始建造第1层：3x3石头基底")
+                .pointAt(util.vector().centerOf(2, 1, 2));
         scene.idle(70);
 
-        // 逐步显示第3层
+        // 逐步显示第1层 (位于5x5底座中央的3x3区域)
         for (int x = 1; x <= 3; x++) {
             for (int z = 1; z <= 3; z++) {
                 // 显示方块
-                scene.world().showSection(util.select().position(x, 3, z), Direction.UP);
+                scene.world().showSection(util.select().position(x, 1, z), Direction.UP);
                 // 生成粒子效果
-                Vec3d pos = util.vector().centerOf(x, 3, z);
+                Vec3d pos = util.vector().centerOf(x, 1, z);
                 scene.effects().emitParticles(
                         pos,
-                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
+                        scene.effects().simpleParticleEmitter(ParticleTypes.CRIT, new Vec3d(0, 0.1, 0)),
                         2, 1
                 );
                 scene.idle(2);
@@ -103,23 +103,23 @@ public class SuperFurnaceScene {
         scene.world().showSection(util.select().position(2, 2, 2), Direction.UP);
         scene.idle(20);
 
-        // 第1层建造过程
+        // 第3层建造过程
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("开始建造第1层：3x3石头基底")
-                .pointAt(util.vector().centerOf(2, 1, 2));
+                .text("建造第3层：3x3石头顶盖")
+                .pointAt(util.vector().centerOf(2, 3, 2));
         scene.idle(70);
 
-        // 逐步显示第1层 (位于5x5底座中央的3x3区域)
+        // 逐步显示第3层
         for (int x = 1; x <= 3; x++) {
             for (int z = 1; z <= 3; z++) {
                 // 显示方块
-                scene.world().showSection(util.select().position(x, 1, z), Direction.UP);
+                scene.world().showSection(util.select().position(x, 3, z), Direction.UP);
                 // 生成粒子效果
-                Vec3d pos = util.vector().centerOf(x, 1, z);
+                Vec3d pos = util.vector().centerOf(x, 3, z);
                 scene.effects().emitParticles(
                         pos,
-                        scene.effects().simpleParticleEmitter(ParticleTypes.CRIT, new Vec3d(0, 0.1, 0)),
+                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
                         2, 1
                 );
                 scene.idle(2);
