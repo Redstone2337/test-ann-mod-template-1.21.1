@@ -23,7 +23,7 @@ public class SuperFurnaceScene {
     public static void superFurnace(SceneBuilder scene, SceneBuildingUtil util) {
         // 设置场景标题
         scene.title("super_furnace", "超级熔炉建造指南");
-        // 配置5x5的基础底板
+        // 配置5x5的基础底板，原点为0,0,0
         scene.configureBasePlate(0, 0, 5);
         // 显示底板
         scene.showBasePlate();
@@ -32,19 +32,19 @@ public class SuperFurnaceScene {
         scene.overlay().showText(80)
                 .colored(PonderPalette.WHITE)
                 .text("超级熔炉：大幅提升熔炼效率的特殊结构")
-                .pointAt(util.vector().centerOf(3, 1, 3));
+                .pointAt(util.vector().centerOf(2, 1, 2));
         scene.idle(90);
 
         // 第3层建造过程（从上至下）
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
                 .text("建造第3层：3x3石头顶盖")
-                .pointAt(util.vector().centerOf(3, 3, 3));
+                .pointAt(util.vector().centerOf(2, 3, 2));
         scene.idle(70);
 
         // 逐步显示第3层
-        for (int x = 2; x <= 4; x++) {
-            for (int z = 2; z <= 4; z++) {
+        for (int x = 1; x <= 3; x++) {
+            for (int z = 1; z <= 3; z++) {
                 // 显示方块
                 scene.world().showSection(util.select().position(x, 3, z), Direction.UP);
                 // 生成粒子效果
@@ -63,13 +63,13 @@ public class SuperFurnaceScene {
         scene.overlay().showText(60)
                 .colored(PonderPalette.GREEN)
                 .text("建造第2层：注意中间位置")
-                .pointAt(util.vector().centerOf(3, 2, 3));
+                .pointAt(util.vector().centerOf(2, 2, 2));
         scene.idle(70);
 
         // 先显示周围的石头
-        for (int x = 2; x <= 4; x++) {
-            for (int z = 2; z <= 4; z++) {
-                if (!(x == 3 && z == 3)) { // 排除中间位置
+        for (int x = 1; x <= 3; x++) {
+            for (int z = 1; z <= 3; z++) {
+                if (!(x == 2 && z == 2)) { // 排除中间位置
                     // 显示方块
                     scene.world().showSection(util.select().position(x, 2, z), Direction.UP);
                     // 生成粒子效果
@@ -90,29 +90,29 @@ public class SuperFurnaceScene {
                 .colored(PonderPalette.RED)
                 .attachKeyFrame()
                 .text("中间位置放置熔炉")
-                .pointAt(util.vector().centerOf(3, 2, 3));
+                .pointAt(util.vector().centerOf(2, 2, 2));
         scene.idle(60);
 
         // 显示熔炉并添加特效
-        Vec3d furnacePos = util.vector().centerOf(3, 2, 3);
+        Vec3d furnacePos = util.vector().centerOf(2, 2, 2);
         scene.effects().emitParticles(
                 furnacePos,
                 scene.effects().simpleParticleEmitter(ParticleTypes.FLAME, new Vec3d(0, 0.2, 0)),
                 8, 15
         );
-        scene.world().showSection(util.select().position(3, 2, 3), Direction.UP);
+        scene.world().showSection(util.select().position(2, 2, 2), Direction.UP);
         scene.idle(20);
 
         // 第1层建造过程
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
                 .text("开始建造第1层：3x3石头基底")
-                .pointAt(util.vector().centerOf(3, 1, 3));
+                .pointAt(util.vector().centerOf(2, 1, 2));
         scene.idle(70);
 
         // 逐步显示第1层 (位于5x5底座中央的3x3区域)
-        for (int x = 2; x <= 4; x++) {
-            for (int z = 2; z <= 4; z++) {
+        for (int x = 1; x <= 3; x++) {
+            for (int z = 1; z <= 3; z++) {
                 // 显示方块
                 scene.world().showSection(util.select().position(x, 1, z), Direction.UP);
                 // 生成粒子效果
@@ -128,17 +128,17 @@ public class SuperFurnaceScene {
         scene.idle(20);
 
         // 显示整个建筑结构
-        scene.world().showSection(util.select().fromTo(2, 1, 2, 4, 3, 4), Direction.UP);
+        scene.world().showSection(util.select().fromTo(1, 1, 1, 3, 3, 3), Direction.UP);
 
         // 最终展示
         scene.overlay().showText(100)
                 .colored(PonderPalette.FAST)
                 .attachKeyFrame()
                 .text("完成！超级熔炉可以大幅提升熔炼速度")
-                .pointAt(util.vector().centerOf(3, 2, 3));
+                .pointAt(util.vector().centerOf(2, 2, 2));
 
         // 完成时的粒子环绕效果
-        Vec3d center = util.vector().centerOf(3, 2, 3);
+        Vec3d center = util.vector().centerOf(2, 2, 2);
         for (int i = 0; i < 8; i++) {
             // 计算粒子位置
             double angle = i * Math.PI / 4;

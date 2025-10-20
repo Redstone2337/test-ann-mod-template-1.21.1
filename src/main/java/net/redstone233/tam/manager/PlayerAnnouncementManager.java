@@ -1,10 +1,8 @@
 package net.redstone233.tam.manager;
 
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.redstone233.tam.config.ConfigManager;
 import net.redstone233.tam.network.NetworkHandler;
 
@@ -12,9 +10,12 @@ public class PlayerAnnouncementManager {
 
     private static final String ANNOUNCEMENT_NBT_KEY = "TamLastSeenAnnouncementHash";
 
-    public static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-        ServerPlayerEntity player = handler.getPlayer();
+    // 移除了 init() 方法，内容已迁移到 PlayerJoinEvent
 
+    /**
+     * 统一的公告检查逻辑（ServerPlayerEntity 版本）
+     */
+    public static void onPlayerJoin(ServerPlayerEntity player) {
         if (!ConfigManager.shouldShowOnWorldEnter()) {
             return;
         }
@@ -34,11 +35,18 @@ public class PlayerAnnouncementManager {
     }
 
     /**
+     * 适配 ServerPlayConnectionEvents.JOIN 事件的方法
+     */
+    public static void onPlayerJoin(ServerPlayNetworkHandler handler, net.fabricmc.fabric.api.networking.v1.PacketSender sender, net.minecraft.server.MinecraftServer server) {
+        onPlayerJoin(handler.getPlayer());
+    }
+
+    /**
      * 从玩家的持久化 NBT 中读取公告哈希
      */
     private static String getPlayerAnnouncementHash(ServerPlayerEntity player) {
         NbtCompound nbt = new NbtCompound();
-        player.writeCustomDataToNbt(nbt); // 使用官方推荐方式
+        player.writeCustomDataToNbt(nbt);
         if (nbt.contains(ANNOUNCEMENT_NBT_KEY, NbtCompound.STRING_TYPE)) {
             return nbt.getString(ANNOUNCEMENT_NBT_KEY);
         }
@@ -50,9 +58,9 @@ public class PlayerAnnouncementManager {
      */
     private static void setPlayerAnnouncementHash(ServerPlayerEntity player, String hash) {
         NbtCompound nbt = new NbtCompound();
-        player.writeCustomDataToNbt(nbt); // 先读取已有数据
+        player.writeCustomDataToNbt(nbt);
         nbt.putString(ANNOUNCEMENT_NBT_KEY, hash);
-        player.readCustomDataFromNbt(nbt); // 写回玩家数据
+        player.readCustomDataFromNbt(nbt);
         System.out.println("已为玩家 " + player.getGameProfile().getName() + " 设置公告哈希: " + hash);
     }
 
