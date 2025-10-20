@@ -1,17 +1,13 @@
 package net.redstone233.tam;
 
-import net.createmod.ponder.foundation.PonderIndex;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.util.Identifier;
 import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
 import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
-import net.redstone233.tam.core.mod.TestAnnModPonderPlugin;
-import net.redstone233.tam.network.AnnouncementPayload;
 import net.redstone233.tam.network.NetworkHandler;
 import net.redstone233.tam.ponder.SuperBlastFurnaceScene;
 import net.redstone233.tam.ponder.SuperFurnaceScene;
