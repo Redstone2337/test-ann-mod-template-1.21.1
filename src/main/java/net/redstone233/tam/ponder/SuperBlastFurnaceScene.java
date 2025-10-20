@@ -34,24 +34,22 @@ public class SuperBlastFurnaceScene {
                 .pointAt(util.vector().centerOf(3, 1, 3));
         scene.idle(90);
 
-        // 第1层：铁块基底
+        // 第3层：平滑石顶盖（从上至下开始）
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("第1层：3x3铁块基底")
-                .pointAt(util.vector().centerOf(3, 1, 3));
+                .text("第3层：3x3平滑石顶盖")
+                .pointAt(util.vector().centerOf(3, 3, 3));
         scene.idle(70);
 
-        // 显示第1层铁块 (位于5x5底座中央的3x3区域)
+        // 显示第3层并添加粒子效果（从上至下）
         for (int x = 2; x <= 4; x++) {
             for (int z = 2; z <= 4; z++) {
-                // 显示铁块位置
-                scene.world().showSection(util.select().position(x, 1, z), Direction.DOWN);
-                // 添加粒子效果
-                Vec3d pos = util.vector().centerOf(x, 1, z);
+                scene.world().showSection(util.select().position(x, 3, z), Direction.UP);
+                Vec3d pos = util.vector().centerOf(x, 3, z);
                 scene.effects().emitParticles(
                         pos,
-                        scene.effects().simpleParticleEmitter(ParticleTypes.ELECTRIC_SPARK, new Vec3d(0, 0.1, 0)),
-                        3, 2
+                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
+                        2, 1
                 );
                 scene.idle(1);
             }
@@ -70,7 +68,7 @@ public class SuperBlastFurnaceScene {
             for (int z = 2; z <= 4; z++) {
                 // 跳过中心位置（用于放置高炉）
                 if (!(x == 3 && z == 3)) {
-                    scene.world().showSection(util.select().position(x, 2, z), Direction.DOWN);
+                    scene.world().showSection(util.select().position(x, 2, z), Direction.UP);
                     Vec3d pos = util.vector().centerOf(x, 2, z);
                     scene.effects().emitParticles(
                             pos,
@@ -98,25 +96,27 @@ public class SuperBlastFurnaceScene {
                 scene.effects().simpleParticleEmitter(ParticleTypes.FLAME, new Vec3d(0, 0.2, 0)),
                 10, 20
         );
-        scene.world().showSection(util.select().position(3, 2, 3), Direction.DOWN);
+        scene.world().showSection(util.select().position(3, 2, 3), Direction.UP);
         scene.idle(20);
 
-        // 第3层：平滑石顶盖
+        // 第1层：铁块基底
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("第3层：3x3平滑石顶盖")
-                .pointAt(util.vector().centerOf(3, 3, 3));
+                .text("第1层：3x3铁块基底")
+                .pointAt(util.vector().centerOf(3, 1, 3));
         scene.idle(70);
 
-        // 显示第3层并添加粒子效果
+        // 显示第1层铁块 (位于5x5底座中央的3x3区域)
         for (int x = 2; x <= 4; x++) {
             for (int z = 2; z <= 4; z++) {
-                scene.world().showSection(util.select().position(x, 3, z), Direction.DOWN);
-                Vec3d pos = util.vector().centerOf(x, 3, z);
+                // 显示铁块位置
+                scene.world().showSection(util.select().position(x, 1, z), Direction.UP);
+                // 添加粒子效果
+                Vec3d pos = util.vector().centerOf(x, 1, z);
                 scene.effects().emitParticles(
                         pos,
-                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
-                        2, 1
+                        scene.effects().simpleParticleEmitter(ParticleTypes.ELECTRIC_SPARK, new Vec3d(0, 0.1, 0)),
+                        3, 2
                 );
                 scene.idle(1);
             }
@@ -129,6 +129,9 @@ public class SuperBlastFurnaceScene {
                 .attachKeyFrame()
                 .text("与普通高炉对比，超级高炉效率更高")
                 .pointAt(util.vector().centerOf(3, 2, 3));
+
+        // 显示整个建筑结构
+        scene.world().showSection(util.select().fromTo(2, 1, 2, 4, 3, 4), Direction.UP);
 
         // 完成时的粒子环绕效果
         Vec3d center = util.vector().centerOf(3, 2, 3);

@@ -35,23 +35,23 @@ public class SuperFurnaceScene {
                 .pointAt(util.vector().centerOf(3, 1, 3));
         scene.idle(90);
 
-        // 第1层建造过程
+        // 第3层建造过程（从上至下）
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("开始建造第1层：3x3石头基底")
-                .pointAt(util.vector().centerOf(3, 1, 3));
+                .text("建造第3层：3x3石头顶盖")
+                .pointAt(util.vector().centerOf(3, 3, 3));
         scene.idle(70);
 
-        // 逐步显示第1层 (位于5x5底座中央的3x3区域)
+        // 逐步显示第3层
         for (int x = 2; x <= 4; x++) {
             for (int z = 2; z <= 4; z++) {
                 // 显示方块
-                scene.world().showSection(util.select().position(x, 1, z), Direction.DOWN);
+                scene.world().showSection(util.select().position(x, 3, z), Direction.UP);
                 // 生成粒子效果
-                Vec3d pos = util.vector().centerOf(x, 1, z);
+                Vec3d pos = util.vector().centerOf(x, 3, z);
                 scene.effects().emitParticles(
                         pos,
-                        scene.effects().simpleParticleEmitter(ParticleTypes.CRIT, new Vec3d(0, 0.1, 0)),
+                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
                         2, 1
                 );
                 scene.idle(2);
@@ -71,7 +71,7 @@ public class SuperFurnaceScene {
             for (int z = 2; z <= 4; z++) {
                 if (!(x == 3 && z == 3)) { // 排除中间位置
                     // 显示方块
-                    scene.world().showSection(util.select().position(x, 2, z), Direction.DOWN);
+                    scene.world().showSection(util.select().position(x, 2, z), Direction.UP);
                     // 生成粒子效果
                     Vec3d pos = util.vector().centerOf(x, 2, z);
                     scene.effects().emitParticles(
@@ -100,33 +100,35 @@ public class SuperFurnaceScene {
                 scene.effects().simpleParticleEmitter(ParticleTypes.FLAME, new Vec3d(0, 0.2, 0)),
                 8, 15
         );
-        scene.world().showSection(util.select().position(3, 2, 3), Direction.DOWN);
+        scene.world().showSection(util.select().position(3, 2, 3), Direction.UP);
         scene.idle(20);
 
-        // 第3层建造过程
+        // 第1层建造过程
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("建造第3层：3x3石头顶盖")
-                .pointAt(util.vector().centerOf(3, 3, 3));
+                .text("开始建造第1层：3x3石头基底")
+                .pointAt(util.vector().centerOf(3, 1, 3));
         scene.idle(70);
 
-        // 逐步显示第3层
+        // 逐步显示第1层 (位于5x5底座中央的3x3区域)
         for (int x = 2; x <= 4; x++) {
             for (int z = 2; z <= 4; z++) {
                 // 显示方块
-                scene.world().showSection(util.select().position(x, 3, z), Direction.DOWN);
+                scene.world().showSection(util.select().position(x, 1, z), Direction.UP);
                 // 生成粒子效果
-                Vec3d pos = util.vector().centerOf(x, 3, z);
+                Vec3d pos = util.vector().centerOf(x, 1, z);
                 scene.effects().emitParticles(
                         pos,
-                        scene.effects().simpleParticleEmitter(ParticleTypes.CLOUD, new Vec3d(0, 0.1, 0)),
+                        scene.effects().simpleParticleEmitter(ParticleTypes.CRIT, new Vec3d(0, 0.1, 0)),
                         2, 1
                 );
                 scene.idle(2);
             }
         }
-
         scene.idle(20);
+
+        // 显示整个建筑结构
+        scene.world().showSection(util.select().fromTo(2, 1, 2, 4, 3, 4), Direction.UP);
 
         // 最终展示
         scene.overlay().showText(100)
