@@ -3,13 +3,13 @@
 	"id": "tam",
 	"version": "${version}",
 	"name": "Test Ann Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "An extremely simple announcement and reflection module.",
 	"authors": [
-		"Me!"
+		"Redstone233"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://redstone2337-web.netlify.app/",
+		"sources": "https://github.com/Redstone2337/test-ann-mod-template-1.21.1"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/tam/icon.png",
