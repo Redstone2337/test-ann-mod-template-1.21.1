@@ -94,10 +94,10 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         // 超级高炉
         translationBuilder.add("rpm.ponder.super_blast_furnace.header", "超级高炉建造指南");
         translationBuilder.add("rpm.ponder.super_blast_furnace.text_1", "超级高炉：高效冶炼矿石的特殊结构");
-        translationBuilder.add("rpm.ponder.super_blast_furnace.text_2", "第1层：3x3铁块基底");
+        translationBuilder.add("rpm.ponder.super_blast_furnace.text_2", "第1层：3x3平滑石块基底");
         translationBuilder.add("rpm.ponder.super_blast_furnace.text_3", "第2层：铁块包围高炉");
         translationBuilder.add("rpm.ponder.super_blast_furnace.text_4", "中心放置高炉");
-        translationBuilder.add("rpm.ponder.super_blast_furnace.text_5", "第3层：3x3平滑石顶盖");
+        translationBuilder.add("rpm.ponder.super_blast_furnace.text_5", "第3层：3x3铁块顶盖");
         translationBuilder.add("rpm.ponder.super_blast_furnace.text_6", "与普通高炉对比，超级高炉效率更高");
 
         // 超级烟熏炉

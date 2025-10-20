@@ -116,10 +116,10 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         // Super Blast Furnace
         translationBuilder.add("rem.ponder.super_blast_furnace.header", "Super Blast Furnace Construction Guide");
         translationBuilder.add("rem.ponder.super_blast_furnace.text_1", "Super Blast Furnace: A special structure for highly efficient ore smelting");
-        translationBuilder.add("rem.ponder.super_blast_furnace.text_2", "Layer 1: 3x3 iron block base");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_2", "Layer 1: 3x3 smooth stone base");
         translationBuilder.add("rem.ponder.super_blast_furnace.text_3", "Layer 2: Surround the blast furnace with iron blocks");
         translationBuilder.add("rem.ponder.super_blast_furnace.text_4", "Place a blast furnace in the center");
-        translationBuilder.add("rem.ponder.super_blast_furnace.text_5", "Layer 3: 3x3 smooth stone top cover");
+        translationBuilder.add("rem.ponder.super_blast_furnace.text_5", "Layer 3: 3x3 block of iron top cover");
         translationBuilder.add("rem.ponder.super_blast_furnace.text_6", "Compared to a regular blast furnace, the Super Blast Furnace is far more efficient");
 
         // Super Smoker
