@@ -23,7 +23,10 @@
 		],
         "client": [
             "net.redstone233.tam.TestAnnModClient"
-        ]
+        ],
+        "modmenu": [
+        "net.redstone233.tam.core.mod.ModMenuRegister"
+      ]
 	},
 	"mixins": [
 		"tam.mixins.json"
