@@ -37,7 +37,7 @@ public class SuperBlastFurnaceScene {
         // 第1层：铁块基底（从下至上开始）
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("第1层：3x3铁块基底")
+                .text("第1层：3x3平滑石基底")
                 .pointAt(util.vector().centerOf(2, 1, 2));
         scene.idle(70);
 
@@ -104,7 +104,7 @@ public class SuperBlastFurnaceScene {
         // 第3层：平滑石顶盖
         scene.overlay().showText(60)
                 .colored(PonderPalette.BLUE)
-                .text("第3层：3x3平滑石顶盖")
+                .text("第3层：3x3铁块顶盖")
                 .pointAt(util.vector().centerOf(2, 3, 2));
         scene.idle(70);
 
