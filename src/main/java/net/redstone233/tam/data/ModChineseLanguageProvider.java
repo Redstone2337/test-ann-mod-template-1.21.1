@@ -119,7 +119,10 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tam.ponder.tag.furnaces", "熔炉类");
         translationBuilder.add("tam.ponder.tag.furnaces.description", "高效熔炼设备的建造指南");
 
-        translationBuilder.add("tooltip.ability_sword.display1","按住 [");
+        translationBuilder.add("itemGroup.tam.mod_items", "测试模组 | 自定义物品");
+        translationBuilder.add("itemGroup.tam.mod_weapons", "测试模组 | 自定义武器");
+
+        translationBuilder.add("tooltip.ability_sword.display1","按住 [ ");
         translationBuilder.add("key.use_ability.item","%s");
         translationBuilder.add("tooltip.ability_sword.display2"," ] 使用武器技能");
 

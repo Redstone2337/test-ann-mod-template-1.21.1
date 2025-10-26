@@ -144,7 +144,10 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModItems.ICE_FREEZE_SWORD, "Ice Freeze Sword");
         translationBuilder.add(ModItems.BLAZING_FLAME_SWORD, "Blazing Flame Sword");
 
-        translationBuilder.add("tooltip.ability_sword.display1","Hold [");
+        translationBuilder.add("itemGroup.tam.mod_items", "Test Mod | Customization Items");
+        translationBuilder.add("itemGroup.tam.mod_weapons", "Test Mod | Customization Weapons");
+
+        translationBuilder.add("tooltip.ability_sword.display1","Hold [ ");
         translationBuilder.add("key.use_ability.item","%s");
         translationBuilder.add("tooltip.ability_sword.display2"," ] for Ability to use");
     }
