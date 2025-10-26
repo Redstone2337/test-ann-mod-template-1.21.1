@@ -8,6 +8,8 @@ import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
 import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
+import net.redstone233.tam.item.ModItemGroups;
+import net.redstone233.tam.item.ModItems;
 import net.redstone233.tam.network.NetworkHandler;
 import net.redstone233.tam.ponder.SuperBlastFurnaceScene;
 import net.redstone233.tam.ponder.SuperFurnaceScene;
@@ -34,6 +36,12 @@ public class TestAnnMod implements ModInitializer {
         // 初始化配置
         ClientConfig.init();
         LOGGER.info("模组配置初始化成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        ModItems.registerItems();
+        LOGGER.info("模组物品注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        ModItemGroups.register();
+        LOGGER.info("模组物品组注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         // 注册网络处理器
         NetworkHandler.register();

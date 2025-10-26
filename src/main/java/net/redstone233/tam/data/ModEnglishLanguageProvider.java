@@ -4,6 +4,7 @@ package net.redstone233.tam.data;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
+import net.redstone233.tam.item.ModItems;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -81,6 +82,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
 
         // 按键绑定（如果使用）
         translationBuilder.add("key.tam.open_config", "Open TAM Config");
+        translationBuilder.add("key.tam.use_ability", "Use Ability For Sword");
         translationBuilder.add("category.tam", "TAM");
 
         // 命令反馈消息
@@ -138,5 +140,12 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tam.ponder.tag.super_smoker", "Super Smoker");
         translationBuilder.add("tam.ponder.tag.furnaces", "Furnaces");
         translationBuilder.add("tam.ponder.tag.furnaces.description", "Construction guides for high-efficiency smelting setups");
+
+        translationBuilder.add(ModItems.ICE_FREEZE_SWORD, "Ice Freeze Sword");
+        translationBuilder.add(ModItems.BLAZING_FLAME_SWORD, "Blazing Flame Sword");
+
+        translationBuilder.add("tooltip.ability_sword.display1","Hold [");
+        translationBuilder.add("key.use_ability.item","%s");
+        translationBuilder.add("tooltip.ability_sword.display2"," ] for Ability to use");
     }
 }

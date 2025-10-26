@@ -4,6 +4,7 @@ package net.redstone233.tam.data;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
+import net.redstone233.tam.item.ModItems;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -81,6 +82,7 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
 
         // 键位绑定
         translationBuilder.add("key.tam.open_config", "打开公告模组配置界面");
+        translationBuilder.add("key.tam.use_ability", "使用武器技能");
         translationBuilder.add("category.tam", "TAM模组");
 
         // 超级熔炉 - 使用正确的键名格式
@@ -116,5 +118,12 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tam.ponder.tag.super_smoker", "超级烟熏炉");
         translationBuilder.add("tam.ponder.tag.furnaces", "熔炉类");
         translationBuilder.add("tam.ponder.tag.furnaces.description", "高效熔炼设备的建造指南");
+
+        translationBuilder.add("tooltip.ability_sword.display1","按住 [");
+        translationBuilder.add("key.use_ability.item","%s");
+        translationBuilder.add("tooltip.ability_sword.display2"," ] 使用武器技能");
+
+        translationBuilder.add(ModItems.BLAZING_FLAME_SWORD, "§c§l火焰之剑");
+        translationBuilder.add(ModItems.ICE_FREEZE_SWORD, "§b§l冰霜之剑");
     }
 }
