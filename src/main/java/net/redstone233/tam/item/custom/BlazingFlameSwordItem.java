@@ -24,7 +24,7 @@ public class BlazingFlameSwordItem extends SwordItem {
     public BlazingFlameSwordItem(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, settings
                 .attributeModifiers(
-                        createAttributeModifiers(ToolMaterials.NETHERITE, 500, -4.7f)
+                        createAttributeModifiers(ToolMaterials.NETHERITE, 500, 3.7f)
                 ));
     }
 
@@ -77,9 +77,13 @@ public class BlazingFlameSwordItem extends SwordItem {
                                 .formatted(Formatting.GOLD))
                         .append(Text.translatable("tooltip.ability_sword.display2").formatted(Formatting.WHITE))
                 ));
+        tooltip.add(Text.literal(" "));
         tooltip.add(Text.literal("§7§l火焰之剑，拥有火焰之威，").formatted(Formatting.GRAY));
-        tooltip.add(Text.literal("专属定制武器").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
-        tooltip.add(Text.literal("§7§l能够点燃敌人，并给予使用者速度和防火效果。\n\n").formatted(Formatting.GRAY));
+        tooltip.add(Text.literal("§7§l能够点燃敌人，并给予使用者速度和防火效果。").formatted(Formatting.GRAY));
+        tooltip.add(Text.literal("§7§l手持该武器时，能够获得饱腹感和防火效果。").formatted(Formatting.GRAY));
+        tooltip.add(Text.literal("§7§l使用能力键时，能够点燃敌人，并给予使用者跳跃和生命效果。").formatted(Formatting.GRAY));
+        tooltip.add(Text.literal("专属特制武器").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
+        tooltip.add(Text.literal(" "));
         tooltip.add(Text.literal("[稀有度]").append(Text.literal("传说").formatted(Formatting.GOLD,Formatting.BOLD)));
         super.appendTooltip(stack, context, tooltip, type);
     }
