@@ -1,5 +1,7 @@
 package net.redstone233.tam.item.custom;
 
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -10,6 +12,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -55,6 +58,16 @@ public class BlazingFlameSwordItem extends SwordItem {
         } else {
             return ActionResult.FAIL;
         }
+    }
+
+    @Override
+    public int getEnchantability() {
+        return 15;
+    }
+
+    @Override
+    public boolean canBeEnchantedWith(ItemStack stack, RegistryEntry<Enchantment> enchantment, EnchantingContext context) {
+        return super.canBeEnchantedWith(stack, enchantment, context);
     }
 
     @Override
