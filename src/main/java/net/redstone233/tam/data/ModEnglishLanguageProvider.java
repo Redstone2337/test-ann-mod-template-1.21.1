@@ -143,9 +143,15 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
 
         translationBuilder.add(ModItems.ICE_FREEZE_SWORD, "Ice Freeze Sword");
         translationBuilder.add(ModItems.BLAZING_FLAME_SWORD, "Blazing Flame Sword");
+        translationBuilder.add(ModItems.GUIDITE_HELMET, "Guidite Helmet");
+        translationBuilder.add(ModItems.GUIDITE_CHESTPLATE, "Guidite Chestplate");
+        translationBuilder.add(ModItems.GUIDITE_LEGGINGS, "Guidite Leggings");
+        translationBuilder.add(ModItems.GUIDITE_BOOTS, "Guidite Boots");
+        translationBuilder.add(ModItems.SUSPICIOUS_SUBSTANCE, "Suspicious Substance");
 
         translationBuilder.add("itemGroup.tam.mod_items", "Test Mod | Customization Items");
         translationBuilder.add("itemGroup.tam.mod_weapons", "Test Mod | Customization Weapons");
+        translationBuilder.add("itemGroup.tam.mod_armors", "Test Mod | Customization Armors");
 
         translationBuilder.add("tooltip.ability_sword.display1","Hold [ ");
         translationBuilder.add("key.use_ability.item","%s");

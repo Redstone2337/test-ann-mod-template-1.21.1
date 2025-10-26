@@ -121,6 +121,7 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
 
         translationBuilder.add("itemGroup.tam.mod_items", "测试模组 | 自定义物品");
         translationBuilder.add("itemGroup.tam.mod_weapons", "测试模组 | 自定义武器");
+        translationBuilder.add("itemGroup.tam.mod_armors", "测试模组 | 自定义盔甲");
 
         translationBuilder.add("tooltip.ability_sword.display1","按住 [ ");
         translationBuilder.add("key.use_ability.item","%s");
@@ -128,5 +129,10 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
 
         translationBuilder.add(ModItems.BLAZING_FLAME_SWORD, "§c§l火焰之剑");
         translationBuilder.add(ModItems.ICE_FREEZE_SWORD, "§b§l冰霜之剑");
+        translationBuilder.add(ModItems.GUIDITE_HELMET, "§e§l可疑头盔");
+        translationBuilder.add(ModItems.GUIDITE_CHESTPLATE, "§e§l可疑胸甲");
+        translationBuilder.add(ModItems.GUIDITE_LEGGINGS, "§e§l可疑护腿");
+        translationBuilder.add(ModItems.GUIDITE_BOOTS, "§e§l可疑靴子");
+        translationBuilder.add(ModItems.SUSPICIOUS_SUBSTANCE, "§c§l可疑物质");
     }
 }

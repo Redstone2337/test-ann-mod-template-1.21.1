@@ -18,6 +18,8 @@ import java.util.function.Supplier;
 
 public class ModArmorMaterials {
 
+    public static final int GUIDITE_DURABILITY_MULTIPLIER = 15;
+
     public static final RegistryEntry<ArmorMaterial> GUIDITE = registerMaterial("guidite",
             // Defense (protection) point values for each armor piece.
             Map.of(

@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.util.Identifier;
+import net.redstone233.tam.armor.ModArmorMaterials;
 import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
@@ -50,6 +51,9 @@ public class TestAnnMod implements ModInitializer {
 
         ModEnchantments.register();
         LOGGER.info("模组附魔注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        ModArmorMaterials.initialize();
+        LOGGER.info("模组盔甲材料注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         // 注册网络处理器
         NetworkHandler.register();
