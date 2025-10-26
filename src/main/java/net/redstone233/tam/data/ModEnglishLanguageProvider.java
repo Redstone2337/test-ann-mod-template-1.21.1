@@ -4,6 +4,8 @@ package net.redstone233.tam.data;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
+import net.redstone233.tam.enchantment.ModEnchantments;
+import net.redstone233.tam.item.ModItemGroups;
 import net.redstone233.tam.item.ModItems;
 
 import java.util.concurrent.CompletableFuture;
@@ -149,9 +151,13 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModItems.GUIDITE_BOOTS, "Guidite Boots");
         translationBuilder.add(ModItems.SUSPICIOUS_SUBSTANCE, "Suspicious Substance");
 
-        translationBuilder.add("itemGroup.tam.mod_items", "Test Mod | Customization Items");
-        translationBuilder.add("itemGroup.tam.mod_weapons", "Test Mod | Customization Weapons");
-        translationBuilder.add("itemGroup.tam.mod_armors", "Test Mod | Customization Armors");
+        translationBuilder.addEnchantment(ModEnchantments.VAMPIRISM, "Vampirism");
+        translationBuilder.addEnchantment(ModEnchantments.FIRE_BLESSING, "Fire Blessing");
+        translationBuilder.addEnchantment(ModEnchantments.FROST_BLESSING, "Ice Blessing");
+
+        translationBuilder.add(ModItemGroups.MOD_ITEMS, "Test Mod | Customization Items");
+        translationBuilder.add(ModItemGroups.MOD_WEAPONS, "Test Mod | Customization Weapons");
+        translationBuilder.add(ModItemGroups.MOD_ARMOR, "Test Mod | Customization Armors");
 
         translationBuilder.add("tooltip.ability_sword.display1","Hold [ ");
         translationBuilder.add("key.use_ability.item","%s");

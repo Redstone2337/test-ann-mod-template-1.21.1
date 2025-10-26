@@ -4,6 +4,8 @@ package net.redstone233.tam.data;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
+import net.redstone233.tam.enchantment.ModEnchantments;
+import net.redstone233.tam.item.ModItemGroups;
 import net.redstone233.tam.item.ModItems;
 
 import java.util.concurrent.CompletableFuture;
@@ -119,9 +121,9 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tam.ponder.tag.furnaces", "熔炉类");
         translationBuilder.add("tam.ponder.tag.furnaces.description", "高效熔炼设备的建造指南");
 
-        translationBuilder.add("itemGroup.tam.mod_items", "测试模组 | 自定义物品");
-        translationBuilder.add("itemGroup.tam.mod_weapons", "测试模组 | 自定义武器");
-        translationBuilder.add("itemGroup.tam.mod_armors", "测试模组 | 自定义盔甲");
+        translationBuilder.add(ModItemGroups.MOD_ITEMS, "测试模组 | 自定义物品");
+        translationBuilder.add(ModItemGroups.MOD_WEAPONS, "测试模组 | 自定义武器");
+        translationBuilder.add(ModItemGroups.MOD_ARMOR, "测试模组 | 自定义盔甲");
 
         translationBuilder.add("tooltip.ability_sword.display1","按住 [ ");
         translationBuilder.add("key.use_ability.item","%s");
@@ -134,5 +136,9 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModItems.GUIDITE_LEGGINGS, "§e§l可疑护腿");
         translationBuilder.add(ModItems.GUIDITE_BOOTS, "§e§l可疑靴子");
         translationBuilder.add(ModItems.SUSPICIOUS_SUBSTANCE, "§c§l可疑物质");
+
+        translationBuilder.addEnchantment(ModEnchantments.VAMPIRISM, "§c§l吸血");
+        translationBuilder.addEnchantment(ModEnchantments.FIRE_BLESSING, "§c§l火焰祝福");
+        translationBuilder.addEnchantment(ModEnchantments.FROST_BLESSING, "§b§l冰霜祝福");
     }
 }
