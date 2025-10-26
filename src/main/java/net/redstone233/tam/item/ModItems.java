@@ -1,6 +1,7 @@
 package net.redstone233.tam.item;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.util.Identifier;
@@ -21,6 +22,7 @@ public class ModItems {
             new IceFreezeSwordItem(ToolMaterials.NETHERITE, new Item.Settings()
                     .maxDamage(3000000)
             ));
+    public static final Item SUSPICIOUS_SUBSTANCE = register("suspicious_substance", new Item(new Item.Settings().maxCount(64)));
 
     public static void registerItems() {
         TestAnnMod.LOGGER.info("Registering Mod Items for " + TestAnnMod.MOD_ID);

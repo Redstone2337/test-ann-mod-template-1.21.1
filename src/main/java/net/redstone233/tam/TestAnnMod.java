@@ -8,6 +8,8 @@ import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
 import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
+import net.redstone233.tam.enchantment.ModEnchantmentEffects;
+import net.redstone233.tam.enchantment.ModEnchantments;
 import net.redstone233.tam.item.ModItemGroups;
 import net.redstone233.tam.item.ModItems;
 import net.redstone233.tam.network.NetworkHandler;
@@ -42,6 +44,12 @@ public class TestAnnMod implements ModInitializer {
 
         ModItemGroups.register();
         LOGGER.info("模组物品组注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        ModEnchantmentEffects.registerModEnchantments();
+        LOGGER.info("模组附魔效果注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        ModEnchantments.register();
+        LOGGER.info("模组附魔注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         // 注册网络处理器
         NetworkHandler.register();

@@ -20,6 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.redstone233.tam.core.keys.ModKeys;
+import net.redstone233.tam.enchantment.ModEnchantments;
 
 import java.util.List;
 
@@ -60,14 +61,35 @@ public class BlazingFlameSwordItem extends SwordItem {
         }
     }
 
+/**
+ * 获取物品的附魔能力值
+ * 这个方法重写了父类的方法，返回一个整数值表示物品的附魔能力
+ * 附魔能力值越高，物品越有可能获得更好的附魔效果
+ *
+ * @return 返回物品的附魔能力值，这里返回15
+ */
     @Override
     public int getEnchantability() {
-        return 15;
+        return 15; // 返回固定的附魔能力值15
     }
 
+/**
+ * 检查物品堆栈是否可以附加特定的附魔
+ * @param stack 要检查的物品堆栈
+ * @param enchantment 要附加的附魔条目
+ * @param context 附魔上下文
+ * @return 如果可以附加返回true，否则返回false
+ */
     @Override
     public boolean canBeEnchantedWith(ItemStack stack, RegistryEntry<Enchantment> enchantment, EnchantingContext context) {
-        return super.canBeEnchantedWith(stack, enchantment, context);
+    // 检查物品堆栈不为空且附魔是否为火焰祝福
+        if (!stack.isEmpty() && enchantment.matchesKey(ModEnchantments.FIRE_BLESSING)) {
+        // 再次检查附魔是否匹配火焰祝福（此行代码似乎无实际作用）
+            enchantment.matchesKey(ModEnchantments.FIRE_BLESSING);
+            return true; // 如果条件满足，返回true表示可以附加
+        } else {
+            return false; // 否则返回false表示不能附加
+        }
     }
 
     @Override
