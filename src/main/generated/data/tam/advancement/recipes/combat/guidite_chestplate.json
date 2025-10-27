@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_suspicious_substance": {
+      "conditions": {
+        "items": [
+          {
+            "items": "tam:suspicious_substance"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tam:guidite_chestplate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_suspicious_substance"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tam:guidite_chestplate"
+    ]
+  }
+}
