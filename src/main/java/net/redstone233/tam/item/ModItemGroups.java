@@ -35,7 +35,7 @@ public class ModItemGroups {
                             entries.add(ModItems.GUIDITE_CHESTPLATE);
                             entries.add(ModItems.GUIDITE_LEGGINGS);
                             entries.add(ModItems.GUIDITE_BOOTS);
-                            entries.add(ModItems.GUIDITE_CHESTPLATE);
+                            entries.add(ModItems.SUSPICIOUS_SUBSTANCE);
                         })
                         .build()
         );
@@ -56,11 +56,11 @@ public class ModItemGroups {
                                 ItemGroup.Row.BOTTOM, 3)
                         .displayName(Text.translatable("itemGroup.tam.mod_armors"))
                         .icon(() -> new ItemStack(ModItems.GUIDITE_CHESTPLATE)).entries((displayContext, entries) -> {
-                            entries.add(ModItems.GUIDITE_HELMET.asItem());
-                            entries.add(ModItems.GUIDITE_CHESTPLATE.asItem());
-                            entries.add(ModItems.GUIDITE_LEGGINGS.asItem());
-                            entries.add(ModItems.GUIDITE_BOOTS.asItem());
+                            entries.add(ModItems.GUIDITE_HELMET);
                             entries.add(ModItems.GUIDITE_CHESTPLATE);
+                            entries.add(ModItems.GUIDITE_LEGGINGS);
+                            entries.add(ModItems.GUIDITE_BOOTS);
+                            entries.add(ModItems.SUSPICIOUS_SUBSTANCE);
                         })
                         .build()
         );
