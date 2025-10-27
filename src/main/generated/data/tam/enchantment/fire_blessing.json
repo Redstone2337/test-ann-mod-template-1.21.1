@@ -24,7 +24,7 @@
     "base": 22,
     "per_level_above_first": 11
   },
-  "max_level": 3,
+  "max_level": 5,
   "min_cost": {
     "base": 12,
     "per_level_above_first": 11
@@ -34,5 +34,5 @@
     "mainhand"
   ],
   "supported_items": "#minecraft:enchantable/weapon",
-  "weight": 5
+  "weight": 3
 }

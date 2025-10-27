@@ -106,7 +106,7 @@ public class BlazingFlameSwordItem extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.literal("§c§l火焰之剑").formatted(Formatting.YELLOW, Formatting.BOLD));
+//        tooltip.add(Text.literal("§c§l火焰之剑").formatted(Formatting.YELLOW, Formatting.BOLD));
         tooltip.add(Text.translatable("tooltip.ability_sword.display1").formatted(Formatting.WHITE)
                 .append(Text.translatable("key.use_ability.item",Text.keybind(ModKeys.USE_ABILITY_KEY.getBoundKeyLocalizedText().getString())
                                 .formatted(Formatting.GOLD))

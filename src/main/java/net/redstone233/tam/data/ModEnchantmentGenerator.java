@@ -31,8 +31,8 @@ public class ModEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, ModEnchantments.VAMPIRISM, Enchantment.builder(Enchantment.definition(
                         wrapperLookup.getWrapperOrThrow(RegistryKeys.ITEM).getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
                         wrapperLookup.getWrapperOrThrow(RegistryKeys.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
-                        5, // 最大等级 5
-                        2, // 重量 2
+                        2,
+                        5,
                         Enchantment.leveledCost(15, 8), // 最小成本: base=15, per_level_above_first=8
                         Enchantment.leveledCost(25, 8), // 最大成本: base=25, per_level_above_first=8
                         8, // 铁砧成本 8
@@ -50,8 +50,8 @@ public class ModEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, ModEnchantments.FIRE_BLESSING, Enchantment.builder(Enchantment.definition(
                         wrapperLookup.getWrapperOrThrow(RegistryKeys.ITEM).getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
                         wrapperLookup.getWrapperOrThrow(RegistryKeys.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
-                        5, // 最大等级 5
-                        3, // 重量 3
+                        3,
+                        5,
                         Enchantment.leveledCost(12, 11), // 最小成本: base=12, per_level_above_first=11
                         Enchantment.leveledCost(22, 11), // 最大成本: base=22, per_level_above_first=11
                         7, // 铁砧成本 7
@@ -68,8 +68,8 @@ public class ModEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, ModEnchantments.FROST_BLESSING, Enchantment.builder(Enchantment.definition(
                         wrapperLookup.getWrapperOrThrow(RegistryKeys.ITEM).getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
                         wrapperLookup.getWrapperOrThrow(RegistryKeys.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
-                        5, // 最大等级 5
-                        3, // 重量 3
+                        3,
+                        5,
                         Enchantment.leveledCost(10, 10), // 最小成本: base=10, per_level_above_first=10
                         Enchantment.leveledCost(20, 10), // 最大成本: base=20, per_level_above_first=10
                         6, // 铁砧成本 6

@@ -18,6 +18,13 @@ public class CustomTrades {
         );
 
         TradeOfferHelper.registerVillagerOffers(
+                VillagerProfession.WEAPONSMITH, 5, factories -> {
+                    factories.add(new TradeOffers.BuyItemFactory(ModItems.BLAZING_FLAME_SWORD,300,1,1,1));
+                    factories.add(new TradeOffers.BuyItemFactory(ModItems.ICE_FREEZE_SWORD,300,1,1,1));
+                }
+        );
+
+        TradeOfferHelper.registerVillagerOffers(
                 VillagerProfession.ARMORER, 2, factories -> {
                     factories.add(new TradeOffers.ProcessItemFactory(ModItems.GUIDITE_HELMET, 1, 2, ModItems.SUSPICIOUS_SUBSTANCE, 5, 16, 1, 0.5f));
                     factories.add(new TradeOffers.ProcessItemFactory(ModItems.GUIDITE_CHESTPLATE, 1, 2, ModItems.SUSPICIOUS_SUBSTANCE, 8, 16, 1, 0.5f));
