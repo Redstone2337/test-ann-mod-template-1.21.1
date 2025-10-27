@@ -18,6 +18,7 @@ import net.redstone233.tam.ponder.SuperBlastFurnaceScene;
 import net.redstone233.tam.ponder.SuperFurnaceScene;
 import net.redstone233.tam.ponder.SuperSmokerScene;
 import net.redstone233.tam.ponder.tags.ModPonderTags;
+import net.redstone233.tam.transaction.CustomTrades;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,10 @@ public class TestAnnMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+/**
+ * 重写onInitialize方法，用于在Minecraft加载模组时进行初始化操作
+ * 此方法会在Minecraft进入模组加载就绪状态时立即执行，但某些资源可能仍未完全初始化
+ */
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -39,21 +44,24 @@ public class TestAnnMod implements ModInitializer {
         // 初始化配置
         ClientConfig.init();
         LOGGER.info("模组配置初始化成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
-
+        // 初始化物品
         ModItems.registerItems();
         LOGGER.info("模组物品注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
-
+        // 初始化物品组
         ModItemGroups.register();
         LOGGER.info("模组物品组注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
-
+        // 注册模组附魔效果
         ModEnchantmentEffects.registerModEnchantments();
         LOGGER.info("模组附魔效果注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
-
+        // 注册模组附魔
         ModEnchantments.register();
         LOGGER.info("模组附魔注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
-
+        // 注册模组盔甲材料
         ModArmorMaterials.initialize();
         LOGGER.info("模组盔甲材料注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        // 初始化交易
+        CustomTrades.init();
+        LOGGER.info("模组交易初始化成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         // 注册网络处理器
         NetworkHandler.register();
