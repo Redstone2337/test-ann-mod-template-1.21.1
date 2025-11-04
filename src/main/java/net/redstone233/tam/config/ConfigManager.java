@@ -18,8 +18,15 @@ public class ConfigManager {
         return ClientConfig.DEBUG_MODE.get();
     }
 
+
+
+    // ==================== 扩展设置 ====================
     public static boolean showPonderScreen() {
         return ClientConfig.IS_ON_PONDER.get();
+    }
+
+    public static boolean isBrewingEnabled() {
+        return ClientConfig.BREWING_ENABLED.get();
     }
 
     // ==================== 显示设置 ====================
@@ -190,6 +197,7 @@ public class ConfigManager {
         config.useCustomAnnouncementBackground = useCustomAnnouncementBackground();
         config.announcementBackgroundPath = getAnnouncementBackgroundPath();
         config.showPonderScreen = showPonderScreen();
+        config.brewingEnabled = isBrewingEnabled();
 
         return config;
     }
@@ -347,6 +355,9 @@ public class ConfigManager {
         ClientConfig.IS_ON_PONDER.set(value);
     }
 
+    public static void setBrewingRecipe(boolean value) {
+        ClientConfig.BREWING_ENABLED.set(value);
+    }
 
     /**
      * 保存配置到文件

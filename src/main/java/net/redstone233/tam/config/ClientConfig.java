@@ -23,9 +23,18 @@ public class ClientConfig {
                 .comment("启用调试模式（显示UI边界等辅助信息）")
                 .define("debugMode", false);
 
+        ClientConfig.BUILDER.pop();
+    }
+
+    // ==================== 扩展设置 ====================
+    private static void setupExtendSettings() {
         IS_ON_PONDER = ClientConfig.BUILDER
                 .comment("是否启用思索提醒")
-                .define("IsOnPonder", true);
+                .define("isOnPonder", true);
+
+        BREWING_ENABLED = ClientConfig.BUILDER
+                .comment("是否启用脚本添加酿造配方")
+                .define("customBrewingEnabled", true);
 
         ClientConfig.BUILDER.pop();
     }
@@ -183,6 +192,7 @@ public class ClientConfig {
     public static ModConfigSpec.ConfigValue<String> ANNOUNCEMENT_BACKGROUND_PATH;
     public static ModConfigSpec.ConfigValue<List<? extends String>> ANNOUNCEMENT_CONTENT;
     public static ModConfigSpec.ConfigValue<String> LAST_DISPLAYED_HASH;
+    public static ModConfigSpec.BooleanValue BREWING_ENABLED;
 
     static {
         // 按顺序初始化各个配置节
@@ -193,6 +203,7 @@ public class ClientConfig {
         setupIconSettings();
         setupBackgroundSettings();
         setupContentSettings();
+        setupExtendSettings();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

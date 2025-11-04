@@ -28,6 +28,7 @@ public class ConfigScreen {
         setupIconCategory(builder, entryBuilder);
         setupBackgroundCategory(builder, entryBuilder);
         setupContentCategory(builder, entryBuilder);
+        setupExtendCategory(builder, entryBuilder);
 
         return builder.build();
     }
@@ -48,12 +49,42 @@ public class ConfigScreen {
                 .setTooltip(Text.translatable("tooltip.tam.debug_mode"))
                 .setSaveConsumer(ConfigManager::setDebugMode)
                 .build());
-        general.addEntry(entryBuilder.startBooleanToggle(Text.translatable("option.tam.show_ponder"),
+
+    }
+
+    private static void setupExtendCategory(ConfigBuilder builder, ConfigEntryBuilder entryBuilder) {
+        ConfigCategory extend = builder.getOrCreateCategory(Text.translatable("category.tam.extend"));
+
+        extend.addEntry(entryBuilder.startBooleanToggle(Text.translatable("option.tam.show_ponder"),
                         ConfigManager.showPonderScreen())
-                        .setDefaultValue(true)
-                        .setTooltip(Text.translatable("tooltip.tam.show_ponder"))
-                        .setSaveConsumer(ConfigManager::setPonderScreen)
+                .setDefaultValue(true)
+                .setTooltip(Text.translatable("tooltip.tam.show_ponder"))
+                .setSaveConsumer(ConfigManager::setPonderScreen)
                 .build());
+
+        extend.addEntry(entryBuilder.startBooleanToggle(Text.translatable("option.tam.brewing_enabled"),
+                        ConfigManager.isBrewingEnabled())
+                .setDefaultValue(true)
+                .setTooltip(Text.translatable("tooltip.tam.brewing_enabled"))
+                .setSaveConsumer(ConfigManager::setBrewingRecipe)
+                .build());
+    }
+
+    private static void setupSystemCategory(ConfigBuilder builder, ConfigEntryBuilder entryBuilder) {
+        ConfigCategory system = builder.getOrCreateCategory(Text.translatable("category.tam.system"));
+        system.addEntry(entryBuilder.startTextDescription(Text.translatable("description.tam.commands"))
+                .build());
+
+    }
+
+    private static String getStackSystemStatus() {
+        try {
+            String ver = TestAnnMod.MOD_VERSION;
+
+            return String.format("模组版本： %s", ver);
+        } catch (Exception e) {
+            return "状态获取失败";
+        }
     }
 
     private static void setupDisplayCategory(ConfigBuilder builder, ConfigEntryBuilder entryBuilder) {

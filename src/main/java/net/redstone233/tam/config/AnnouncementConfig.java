@@ -23,6 +23,7 @@ public class AnnouncementConfig {
     public boolean useCustomAnnouncementBackground;
     public String announcementBackgroundPath;
     public boolean showPonderScreen;
+    public boolean brewingEnabled;
 
     public AnnouncementConfig() {
         // 空构造函数用于反序列化
@@ -100,7 +101,9 @@ public class AnnouncementConfig {
 
         // 滚动速度和显示模式
         sb.append((int)(scrollSpeed * 10)); // 将小数转换为整数避免浮点精度问题
+        // 扩展内容
         sb.append(showPonderScreen);
+        sb.append(brewingEnabled);
 
         // 使用更可靠的哈希算法
         return Integer.toHexString(Objects.hash(sb.toString()));

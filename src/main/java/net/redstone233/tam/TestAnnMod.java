@@ -34,9 +34,11 @@ public class TestAnnMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+    public static final String MOD_VERSION = "0.1+build.11";
+
     private EnhancedBrewingRecipeParser brewingParser;
 
-/**
+    /**
  * 重写onInitialize方法，用于在Minecraft加载模组时进行初始化操作
  * 此方法会在Minecraft进入模组加载就绪状态时立即执行，但某些资源可能仍未完全初始化
  */

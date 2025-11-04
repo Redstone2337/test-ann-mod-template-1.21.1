@@ -28,6 +28,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("category.tam.icon", "Icon Settings");
         translationBuilder.add("category.tam.background", "Background Settings");
         translationBuilder.add("category.tam.content", "Content Settings");
+        translationBuilder.add("category.tam.extend", "Extend Settings");
 
         // 选项
         translationBuilder.add("option.tam.show_on_world_enter", "Show on World Enter");
@@ -51,6 +52,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("option.tam.background_path", "Background Path");
         translationBuilder.add("option.tam.announcement_content", "Announcement Content");
         translationBuilder.add("option.tam.show_ponder", "Display Ponder Screen");
+        translationBuilder.add("option.tam.brewing_enabled", "Enable Brewing Recipe");
 
         // 工具提示
         translationBuilder.add("tooltip.tam.show_on_world_enter", "Whether to show announcement when player first enters the world");
@@ -74,6 +76,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tooltip.tam.background_path", "Path to the background image resource");
         translationBuilder.add("tooltip.tam.announcement_content", "Specific content of the announcement, supports multiple lines and color codes");
         translationBuilder.add("tooltip.tam.show_ponder", "Whether to display the Ponder screen when the announcement is shown");
+        translationBuilder.add("tooltip.tam.brewing_enabled", "Whether to enable the brewing recipe for the TAM item");
 
         // 描述
         translationBuilder.add("description.tam.announcement_content", "One announcement content per line, supports Minecraft color codes (§)");

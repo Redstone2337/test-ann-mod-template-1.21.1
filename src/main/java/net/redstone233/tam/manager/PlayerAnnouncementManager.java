@@ -76,7 +76,7 @@ public class PlayerAnnouncementManager {
     public static String getDebugInfo(ServerPlayerEntity player) {
         String currentHash = ConfigManager.getConfigHash();
         String playerHash = getPlayerAnnouncementHash(player);
-        return String.format("当前公告哈希: %s, 玩家记录哈希: %s, 是否显示: %s",
-                currentHash, playerHash, !currentHash.equals(playerHash));
+        return String.format("当前公告哈希: %s, 玩家记录哈希: %s, 是否显示: %s, 思索启用状态： %s",
+                currentHash, playerHash, !currentHash.equals(playerHash), ConfigManager.showPonderScreen());
     }
 }
