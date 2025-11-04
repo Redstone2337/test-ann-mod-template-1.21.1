@@ -3,10 +3,14 @@ package net.redstone233.tam;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.util.Identifier;
 import net.redstone233.tam.armor.ModArmorMaterials;
+import net.redstone233.tam.commands.v1.BrewingRecipeCommand;
 import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
+import net.redstone233.tam.core.brewing.BrewingRecipeParser;
+import net.redstone233.tam.core.brewing.EnhancedBrewingRecipeParser;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
 import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
 import net.redstone233.tam.enchantment.ModEnchantmentEffects;
@@ -29,6 +33,8 @@ public class TestAnnMod implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+    private EnhancedBrewingRecipeParser brewingParser;
 
 /**
  * 重写onInitialize方法，用于在Minecraft加载模组时进行初始化操作
@@ -67,11 +73,12 @@ public class TestAnnMod implements ModInitializer {
         NetworkHandler.register();
         LOGGER.info("网络处理器注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
-        // 注册调试命令
+        // 注册调试命令与配方重载命令
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             DebugCommands.register(dispatcher);
+            BrewingRecipeCommand.register(dispatcher, brewingParser);
         });
-        LOGGER.info("调试命令注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        LOGGER.info("模组命令注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         // 注册人家加入事件
         PlayerJoinEvent.init();
@@ -92,11 +99,26 @@ public class TestAnnMod implements ModInitializer {
         SuperFurnaceRegistration.init();
         LOGGER.info("超级熔炼系统注册初始化完成，耗时{}ms", System.currentTimeMillis() - startTime);
 
+        // 初始化增强的酿造配方解析器
+        brewingParser = new EnhancedBrewingRecipeParser(MOD_ID);
+        LOGGER.info("增强的酿造配方解析器初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
         LOGGER.info("Test Announcement Mod initialized successfully");
         LOGGER.info("模组内容初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            brewingParser.loadBrewingRecipes();
+        });
     }
 
     public static Identifier id(String path) {
         return Identifier.of(MOD_ID, path);
+    }
+
+    /**
+     * 获取酿造配方解析器实例（用于命令等）
+     */
+    public EnhancedBrewingRecipeParser getBrewingParser() {
+        return brewingParser;
     }
 }
