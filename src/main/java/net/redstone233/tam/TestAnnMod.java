@@ -9,6 +9,7 @@ import net.redstone233.tam.armor.ModArmorMaterials;
 import net.redstone233.tam.commands.v1.BrewingRecipeCommand;
 import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
+import net.redstone233.tam.config.ConfigManager;
 import net.redstone233.tam.core.brewing.BrewingRecipeParser;
 import net.redstone233.tam.core.brewing.EnhancedBrewingRecipeParser;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
@@ -78,7 +79,9 @@ public class TestAnnMod implements ModInitializer {
         // 注册调试命令与配方重载命令
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             DebugCommands.register(dispatcher);
-            BrewingRecipeCommand.register(dispatcher, brewingParser);
+            if (ConfigManager.isBrewingEnabled()) {
+                BrewingRecipeCommand.register(dispatcher, brewingParser);
+            }
         });
         LOGGER.info("模组命令注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
@@ -102,8 +105,12 @@ public class TestAnnMod implements ModInitializer {
         LOGGER.info("超级熔炼系统注册初始化完成，耗时{}ms", System.currentTimeMillis() - startTime);
 
         // 初始化增强的酿造配方解析器
-        brewingParser = new EnhancedBrewingRecipeParser(MOD_ID);
-        LOGGER.info("增强的酿造配方解析器初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        if (ConfigManager.isBrewingEnabled()) {
+            brewingParser = new EnhancedBrewingRecipeParser(MOD_ID);
+            LOGGER.info("增强的酿造配方解析器初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        } else {
+            LOGGER.info("酿造配方关闭，增强的酿造配方解析器已被跳过，耗时： {}ms", System.currentTimeMillis() - startTime);
+        }
 
         LOGGER.info("Test Announcement Mod initialized successfully");
         LOGGER.info("模组内容初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
