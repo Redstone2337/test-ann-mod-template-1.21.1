@@ -34,7 +34,7 @@ public class TestAnnMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final String MOD_VERSION = "0.1+build.11";
+    public static final String MOD_VERSION = "0.1+build.10-live.1";
 
     private EnhancedBrewingRecipeParser brewingParser;
 
