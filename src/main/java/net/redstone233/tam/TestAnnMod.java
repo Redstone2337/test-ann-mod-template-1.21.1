@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.MinecraftVersion;
 import net.minecraft.util.Identifier;
 import net.redstone233.tam.armor.ModArmorMaterials;
 import net.redstone233.tam.commands.v1.BrewingRecipeCommand;
@@ -40,6 +41,14 @@ public class TestAnnMod implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     private static String MOD_VERSION;
+
+    public static final String MC_VERSION = MinecraftVersion.create().getName();
+    public static final String FABRIC_LOADER_VERSION = FabricLoader.getInstance().getModContainer("fabricloader")
+            .orElseThrow().getMetadata().getVersion().getFriendlyString();
+    public static final String FABRIC_API_VERSION = FabricLoader.getInstance().getModContainer("fabric-api")
+            .orElseThrow().getMetadata().getVersion().toString();
+    public static final String JS_VERSION = "1.0.0";
+    public static final String SYNTAX = "ES2020";
 
     private EnhancedBrewingRecipeParser brewingParser;
 

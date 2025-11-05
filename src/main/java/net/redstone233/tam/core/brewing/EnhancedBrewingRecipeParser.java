@@ -37,7 +37,7 @@ public class EnhancedBrewingRecipeParser {
 
     public EnhancedBrewingRecipeParser(String modId) {
         this.modId = modId;
-        this.configDir = Path.of(FabricLoader.getInstance().getGameDir() + "/config/" + modId + "/brewing_recipes");
+        this.configDir = Path.of(FabricLoader.getInstance().getGameDir() + "/data/" + modId + "scripts/brewing_recipes");
     }
 
     /**

@@ -84,14 +84,14 @@ public class ConfigScreen {
     private static String getStackSystemStatus() {
         try {
             String ver = TestAnnMod.getModVersion();
-            String mcv = MinecraftVersion.create().getName();
-            String loaderVersion = FabricLoader.getInstance().getModContainer("fabricloader")
-                    .orElseThrow().getMetadata().getVersion().getFriendlyString();
-            String apiVersion = FabricLoader.getInstance().getModContainer("fabric-api")
-                    .orElseThrow().getMetadata().getVersion().toString();
+            String mcv = TestAnnMod.MC_VERSION;
+            String loaderVersion = TestAnnMod.FABRIC_LOADER_VERSION;
+            String apiVersion = TestAnnMod.FABRIC_API_VERSION;
+            String jsVer = TestAnnMod.JS_VERSION;
+            String syntax = TestAnnMod.SYNTAX;
 
-            return String.format("模组版本：%s, \n游戏版本：%s, \n运行器版本：%s, \nAPI版本：%s",
-                    ver, mcv, loaderVersion, apiVersion);
+            return String.format("模组版本：%s, \n游戏版本：%s, \n运行器版本：%s, \nFabricAPI版本：%s, \n脚本版本：%s, \n语法规则：%s",
+                    ver, mcv, loaderVersion, apiVersion, jsVer, syntax);
         } catch (Exception e) {
             return "状态获取失败";
         }

@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "lib": ["ES2020"],
+    "allowJs": true,
+    "checkJs": false,
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "types/*",
+        "*"
+      ]
+    },
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types",
+      "../node_modules/@types",
+      "../../node_modules/@types"
+    ]
+  },
+  "include": [
+    "**/*.js",
+    "types/**/*.d.ts",
+    "node_modules/**/*.d.ts",
+    "../node_modules/**/*.d.ts",
+    "../../node_modules/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

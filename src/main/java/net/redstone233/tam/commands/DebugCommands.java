@@ -12,7 +12,9 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.redstone233.tam.TestAnnMod;
 import net.redstone233.tam.config.ConfigManager;
+import net.redstone233.tam.core.tool.ModJarZipExtractor;
 import net.redstone233.tam.manager.AnnouncementManager;
 import net.redstone233.tam.network.NetworkHandler;
 
@@ -83,7 +85,30 @@ public class DebugCommands {
                                         .executes(DebugCommands::forceUpdateHash))
                         )
                 )
+                .then(literal("dump")
+                        .executes(run -> dumpResources(run.getSource())
+                        )
+                )
         );
+    }
+
+    private static int dumpResources(ServerCommandSource source) {
+        // 检查权限
+        if (!source.hasPermissionLevel(2)) {
+            source.sendError(Text.literal("你没有执行此命令的权限"));
+            return 0;
+        }
+
+        // 执行资源导出
+        boolean success = ModJarZipExtractor.dumpAllResourcesOnCommand(TestAnnMod.class, TestAnnMod.LOGGER);
+
+        if (success) {
+            source.sendMessage(Text.literal("资源文件已成功导出到配置目录"));
+            return 1;
+        } else {
+            source.sendError(Text.literal("资源导出失败，请查看服务器日志"));
+            return 0;
+        }
     }
 
     private static int showPonderScreen(CommandContext<ServerCommandSource> context, boolean isShow) {
