@@ -11,6 +11,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
+import net.redstone233.tam.TestAnnMod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,9 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 /**
- * 增强的酿造配方解析器
+ * 增强的酿造配方解析器 - 支持两种格式
+ * 1. 传统格式: BrewingRecipeEvent.create(e => { ... })
+ * 2. 简化格式: brew({ ... })
  * 使用 Fabric API 注册酿造配方
  */
 public class EnhancedBrewingRecipeParser {
@@ -32,12 +35,9 @@ public class EnhancedBrewingRecipeParser {
     private boolean initialized = false;
     private int registeredRecipeCount = 0;
 
-    /**
-     * 构造函数
-     */
     public EnhancedBrewingRecipeParser(String modId) {
         this.modId = modId;
-        this.configDir = Path.of(FabricLoader.getInstance().getGameDir() + modId + "scripts/brewing_recipes");
+        this.configDir = Path.of(FabricLoader.getInstance().getGameDir() + "/config/" + modId + "/brewing_recipes");
     }
 
     /**
@@ -49,10 +49,7 @@ public class EnhancedBrewingRecipeParser {
         }
 
         LOGGER.info("初始化增强酿造配方解析器 for mod: {}", modId);
-
-        // 初始化自定义药水
         CustomPotionRegistry.initialize();
-
         initialized = true;
         LOGGER.info("增强酿造配方解析器初始化完成");
     }
@@ -65,22 +62,20 @@ public class EnhancedBrewingRecipeParser {
             initialize();
         }
 
-        // 重置计数器
         registeredRecipeCount = 0;
 
         try {
             if (!Files.exists(configDir)) {
                 Files.createDirectories(configDir);
-                createExampleRecipeFile();
+                createDualFormatExampleFile();
                 LOGGER.info("创建酿造配方目录: {}", configDir);
                 return;
             }
 
-            // 使用 Fabric API 注册配方
             FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
                 try (DirectoryStream<Path> stream = Files.newDirectoryStream(configDir, "*.js")) {
                     for (Path file : stream) {
-                        parseBrewingRecipeFile(file, builder);
+                        parseDualFormatRecipeFile(file, builder);
                     }
                 } catch (IOException e) {
                     LOGGER.error("读取酿造配方文件时出错: {}", e.getMessage());
@@ -94,33 +89,14 @@ public class EnhancedBrewingRecipeParser {
         }
     }
 
-    /**
-     * 重新加载酿造配方
-     */
-    public void reloadBrewingRecipes() {
-        LOGGER.info("重新加载酿造配方 for mod: {}", modId);
-        loadBrewingRecipes();
-    }
-
-    private void createExampleRecipeFile() throws IOException {
+    private void createDualFormatExampleFile() throws IOException {
         Path exampleFile = configDir.resolve("example_recipes.js");
         String exampleContent =
-                "// 示例酿造配方文件 - 模组: " + modId + "\n" +
-                        "// 使用 Fabric API 注册的酿造配方\n\n" +
+                "// 双重格式酿造配方文件 - 模组: " + modId + "\n" +
+                        "// 支持两种编写方式：传统格式和简化格式\n\n" +
 
-                        "// 基础药水配方 - 水瓶 + 下界疣 -> 笨拙药水\n" +
-                        "BrewingRecipeEvent.create(e => {\n" +
-                        "    let {input, material, output} = e;\n" +
-                        "    input.add(Items.POTION)\n" +
-                        "        .component(DataComponentTypes.POTION_CONTENTS, Potions.WATER)\n" +
-                        "        .toCreateBrewing();\n" +
-                        "    material.add(Items.NETHER_WART).toCreateBrewing();\n" +
-                        "    output.add(Items.POTION)\n" +
-                        "        .component(DataComponentTypes.POTION_CONTENTS, Potions.AWKWARD)\n" +
-                        "        .toCreateBrewing();\n" +
-                        "})\n\n" +
-
-                        "// 自定义药水配方 - 笨拙药水 + 绿宝石 -> 幸运药水\n" +
+                        "// ===== 传统格式 (BrewingRecipeEvent.create) =====\n" +
+                        "// 幸运药水配方\n" +
                         "BrewingRecipeEvent.create(e => {\n" +
                         "    let {input, material, output} = e;\n" +
                         "    input.add(Items.POTION)\n" +
@@ -132,48 +108,74 @@ public class EnhancedBrewingRecipeParser {
                         "        .toCreateBrewing();\n" +
                         "})\n\n" +
 
-                        "// 喷溅型药水配方 - 力量药水 + 火药 -> 喷溅型力量药水\n" +
+                        "// 力量药水 II 配方\n" +
                         "BrewingRecipeEvent.create(e => {\n" +
                         "    let {input, material, output} = e;\n" +
                         "    input.add(Items.POTION)\n" +
                         "        .component(DataComponentTypes.POTION_CONTENTS, Potions.STRENGTH)\n" +
                         "        .toCreateBrewing();\n" +
-                        "    material.add(Items.GUNPOWDER).toCreateBrewing();\n" +
-                        "    output.add(Items.SPLASH_POTION)\n" +
-                        "        .component(DataComponentTypes.POTION_CONTENTS, Potions.STRENGTH)\n" +
+                        "    material.add(Items.GLOWSTONE_DUST).toCreateBrewing();\n" +
+                        "    output.add(Items.POTION)\n" +
+                        "        .component(DataComponentTypes.POTION_CONTENTS, 'tam:strength_potion_ii')\n" +
                         "        .toCreateBrewing();\n" +
                         "})\n\n" +
 
-                        "// 延长版药水配方 - 再生药水 + 红石 -> 延长版再生药水\n" +
-                        "BrewingRecipeEvent.create(e => {\n" +
-                        "    let {input, material, output} = e;\n" +
-                        "    input.add(Items.POTION)\n" +
-                        "        .component(DataComponentTypes.POTION_CONTENTS, Potions.REGENERATION)\n" +
-                        "        .toCreateBrewing();\n" +
-                        "    material.add(Items.REDSTONE).toCreateBrewing();\n" +
-                        "    output.add(Items.POTION)\n" +
-                        "        .component(DataComponentTypes.POTION_CONTENTS, 'tam:long_regeneration_potion')\n" +
-                        "        .toCreateBrewing();\n" +
-                        "})";
+                        "// ===== 简化格式 (brew) =====\n" +
+                        "// 抗性药水配方\n" +
+                        "brew({\n" +
+                        "  input: {item: 'potion', potion: 'awkward'},\n" +
+                        "  material: 'obsidian',\n" +
+                        "  output: {item: 'potion', potion: 'tam:resistance_potion'}\n" +
+                        "})\n\n" +
+
+                        "// 喷溅型药水示例\n" +
+                        "brew({\n" +
+                        "  input: {item: 'potion', potion: 'strength'},\n" +
+                        "  material: 'gunpowder',\n" +
+                        "  output: {item: 'splash_potion', potion: 'strength'}\n" +
+                        "})\n\n" +
+
+                        "// 延长版药水示例\n" +
+                        "brew({\n" +
+                        "  input: {item: 'potion', potion: 'regeneration'},\n" +
+                        "  material: 'redstone',\n" +
+                        "  output: {item: 'potion', potion: 'long_regeneration'}\n" +
+                        "})\n\n" +
+
+                        "// 混合使用两种格式也是可以的！";
 
         Files.writeString(exampleFile, exampleContent);
-        LOGGER.info("已创建示例配方文件: {}", exampleFile);
+        LOGGER.info("已创建双重格式示例文件: {}", exampleFile);
     }
 
-    private void parseBrewingRecipeFile(Path file, FabricBrewingRecipeRegistryBuilder builder) {
+    /**
+     * 解析双重格式的配方文件
+     */
+    private void parseDualFormatRecipeFile(Path file, FabricBrewingRecipeRegistryBuilder builder) {
         try {
             String content = Files.readString(file);
-            LOGGER.info("解析酿造配方文件: {}", file.getFileName());
-
-            // 查找所有配方块
-            Pattern recipePattern = Pattern.compile("BrewingRecipeEvent\\.create\\(e\\s*=>\\s*\\{([^}]+)}", Pattern.DOTALL);
-            Matcher recipeMatcher = recipePattern.matcher(content);
+            LOGGER.info("解析双重格式酿造配方文件: {}", file.getFileName());
 
             int recipeCount = 0;
-            while (recipeMatcher.find()) {
+
+            // 先解析传统格式
+            Pattern legacyPattern = Pattern.compile("BrewingRecipeEvent\\.create\\(e\\s*=>\\s*\\{([^}]+)}", Pattern.DOTALL);
+            Matcher legacyMatcher = legacyPattern.matcher(content);
+
+            while (legacyMatcher.find()) {
                 recipeCount++;
-                String recipeContent = recipeMatcher.group(1);
-                parseSingleRecipe(recipeContent, file.getFileName().toString(), recipeCount, builder);
+                String recipeContent = legacyMatcher.group(1);
+                parseLegacyRecipe(recipeContent, file.getFileName().toString(), recipeCount, builder);
+            }
+
+            // 再解析简化格式
+            Pattern simplifiedPattern = Pattern.compile("brew\\(\\s*\\{([^}]+)}\\s*\\)", Pattern.DOTALL);
+            Matcher simplifiedMatcher = simplifiedPattern.matcher(content);
+
+            while (simplifiedMatcher.find()) {
+                recipeCount++;
+                String recipeContent = simplifiedMatcher.group(1);
+                parseSimplifiedRecipe(recipeContent, file.getFileName().toString(), recipeCount, builder);
             }
 
             LOGGER.info("在文件 {} 中找到 {} 个配方", file.getFileName(), recipeCount);
@@ -185,32 +187,38 @@ public class EnhancedBrewingRecipeParser {
         }
     }
 
-    private void parseSingleRecipe(String recipeContent, String fileName, int recipeNumber, FabricBrewingRecipeRegistryBuilder builder) {
+    /**
+     * 解析传统格式的单个配方
+     */
+    private void parseLegacyRecipe(String recipeContent, String fileName, int recipeNumber, FabricBrewingRecipeRegistryBuilder builder) {
         try {
-            BrewingRecipe recipe = new BrewingRecipe();
+            LegacyBrewingRecipe recipe = new LegacyBrewingRecipe();
 
             // 解析输入物品
-            parseItemSection(recipeContent, "input", recipe.input);
+            parseLegacyItemSection(recipeContent, "input", recipe.input);
 
             // 解析材料物品
-            parseMaterialSection(recipeContent, recipe);
+            parseLegacyMaterialSection(recipeContent, recipe);
 
             // 解析输出物品
-            parseItemSection(recipeContent, "output", recipe.output);
+            parseLegacyItemSection(recipeContent, "output", recipe.output);
 
             if (recipe.isValid()) {
-                registerBrewingRecipe(recipe, fileName, recipeNumber, builder);
+                registerLegacyBrewingRecipe(recipe, fileName, recipeNumber, builder);
             } else {
-                LOGGER.warn("文件 {} 中的配方 #{} 不完整", fileName, recipeNumber);
+                LOGGER.warn("文件 {} 中的传统格式配方 #{} 不完整", fileName, recipeNumber);
             }
 
         } catch (Exception e) {
-            LOGGER.error("解析文件 {} 中的配方 #{} 时出错: {}", fileName, recipeNumber, e.getMessage());
+            LOGGER.error("解析文件 {} 中的传统格式配方 #{} 时出错: {}", fileName, recipeNumber, e.getMessage());
         }
     }
 
-    private void parseItemSection(String content, String prefix, ItemData itemData) {
-        // 匹配 input.add(...).component(...).component(...).toCreateBrewing()
+    /**
+     * 解析传统格式的物品部分
+     */
+    private void parseLegacyItemSection(String content, String prefix, LegacyItemData itemData) {
+        // 匹配 input.add(...).component(...).toCreateBrewing()
         Pattern pattern = Pattern.compile(
                 prefix + "\\.add\\(([^)]+)\\)" +
                         "(.*?)\\.toCreateBrewing\\(\\)",
@@ -220,24 +228,30 @@ public class EnhancedBrewingRecipeParser {
 
         if (matcher.find()) {
             String itemStr = matcher.group(1);
-            itemData.itemId = parseItemString(itemStr);
+            itemData.itemId = parseLegacyItemString(itemStr);
 
             String componentsStr = matcher.group(2);
-            parseComponents(componentsStr, itemData);
+            parseLegacyComponents(componentsStr, itemData);
         }
     }
 
-    private void parseMaterialSection(String content, BrewingRecipe recipe) {
+    /**
+     * 解析传统格式的材料部分
+     */
+    private void parseLegacyMaterialSection(String content, LegacyBrewingRecipe recipe) {
         Pattern materialPattern = Pattern.compile("material\\.add\\(([^)]+)\\)\\.toCreateBrewing\\(\\)");
         Matcher materialMatcher = materialPattern.matcher(content);
 
         if (materialMatcher.find()) {
             String itemStr = materialMatcher.group(1);
-            recipe.materialItem = parseItemString(itemStr);
+            recipe.materialItem = parseLegacyItemString(itemStr);
         }
     }
 
-    private void parseComponents(String componentsStr, ItemData itemData) {
+    /**
+     * 解析传统格式的组件
+     */
+    private void parseLegacyComponents(String componentsStr, LegacyItemData itemData) {
         if (componentsStr == null || componentsStr.trim().isEmpty()) {
             return;
         }
@@ -260,7 +274,10 @@ public class EnhancedBrewingRecipeParser {
         }
     }
 
-    private String parseItemString(String itemString) {
+    /**
+     * 解析传统格式的物品字符串
+     */
+    private String parseLegacyItemString(String itemString) {
         itemString = itemString.trim();
 
         if (itemString.startsWith("Items.")) {
@@ -278,71 +295,225 @@ public class EnhancedBrewingRecipeParser {
         return itemString;
     }
 
-    private void registerBrewingRecipe(BrewingRecipe recipe, String fileName, int recipeNumber, FabricBrewingRecipeRegistryBuilder builder) {
+    /**
+     * 注册传统格式的酿造配方
+     */
+    private void registerLegacyBrewingRecipe(LegacyBrewingRecipe recipe, String fileName, int recipeNumber, FabricBrewingRecipeRegistryBuilder builder) {
         try {
-            Item inputItem = Registries.ITEM.get(Identifier.of(recipe.input.itemId));
-            Item materialItem = Registries.ITEM.get(Identifier.of(recipe.materialItem));
-            Item outputItem = Registries.ITEM.get(Identifier.of(recipe.output.itemId));
+            Item inputItem = getItemById(recipe.input.itemId);
+            Item materialItem = getItemById(recipe.materialItem);
+            Item outputItem = getItemById(recipe.output.itemId);
 
             if (inputItem != null && materialItem != null && outputItem != null) {
-                // 获取输入和输出的药水效果
                 RegistryEntry<Potion> inputPotion = recipe.input.potionValue != null ?
                         CustomPotionRegistry.getPotion(recipe.input.potionValue) : null;
                 RegistryEntry<Potion> outputPotion = recipe.output.potionValue != null ?
                         CustomPotionRegistry.getPotion(recipe.output.potionValue) : null;
 
-                // 创建 Ingredient
                 Ingredient ingredient = Ingredient.ofItems(materialItem);
 
-                // 判断配方类型并注册
                 if (isPotionConversionRecipe(inputItem, outputItem, inputPotion, outputPotion)) {
-                    // 药水效果转换配方
                     registerPotionConversionRecipe(builder, inputPotion, ingredient, outputPotion);
                 } else if (isItemConversionRecipe(inputItem, outputItem)) {
-                    // 物品类型转换配方（如普通药水→喷溅药水）
                     registerItemConversionRecipe(builder, inputItem, ingredient, outputItem);
                 } else {
-                    LOGGER.warn("无法识别的配方类型: {} -> {}", recipe.input.itemId, recipe.output.itemId);
+                    LOGGER.warn("无法识别的传统配方类型: {} -> {}", recipe.input.itemId, recipe.output.itemId);
                     return;
                 }
 
                 registeredRecipeCount++;
-                LOGGER.info("已注册酿造配方 #{}: {} + {} -> {} (来自 {})",
+                LOGGER.info("已注册传统酿造配方 #{}: {} + {} -> {} (来自 {})",
                         recipeNumber, recipe.input.itemId, recipe.materialItem, recipe.output.itemId, fileName);
             } else {
-                LOGGER.warn("无法找到物品: input={}, material={}, output={}",
-                        recipe.input.itemId, recipe.materialItem, recipe.output.itemId);
+               legendaryRecipe(recipe);
             }
 
         } catch (Exception e) {
-            LOGGER.error("注册酿造配方 #{} 时出错: {}", recipeNumber, e.getMessage(), e);
+            LOGGER.error("注册传统酿造配方 #{} 时出错: {}", recipeNumber, e.getMessage(), e);
         }
     }
 
     /**
-     * 判断是否为药水效果转换配方
+     * 解析简化格式的单个配方
      */
+    private void parseSimplifiedRecipe(String recipeContent, String fileName, int recipeNumber, FabricBrewingRecipeRegistryBuilder builder) {
+        try {
+            SimplifiedBrewingRecipe recipe = new SimplifiedBrewingRecipe();
+
+            // 解析输入
+            parseSimplifiedItem(recipeContent, "input", recipe.input);
+
+            // 解析材料
+            parseSimplifiedMaterial(recipeContent, recipe);
+
+            // 解析输出
+            parseSimplifiedItem(recipeContent, "output", recipe.output);
+
+            if (recipe.isValid()) {
+                registerSimplifiedBrewingRecipe(recipe, fileName, recipeNumber, builder);
+            } else {
+                LOGGER.warn("文件 {} 中的简化格式配方 #{} 不完整", fileName, recipeNumber);
+            }
+
+        } catch (Exception e) {
+            LOGGER.error("解析文件 {} 中的简化格式配方 #{} 时出错: {}", fileName, recipeNumber, e.getMessage());
+        }
+    }
+
+    /**
+     * 解析简化的物品部分
+     */
+    private void parseSimplifiedItem(String content, String fieldName, SimplifiedItemData itemData) {
+        // 匹配 input: {item: 'potion', potion: 'awkward'}
+        Pattern pattern = Pattern.compile(
+                fieldName + ":\\s*\\{([^}]+)}",
+                Pattern.DOTALL
+        );
+        Matcher matcher = pattern.matcher(content);
+
+        if (matcher.find()) {
+            String itemContent = matcher.group(1);
+
+            // 解析 item 字段
+            Pattern itemPattern = Pattern.compile("item:\\s*['\"]([^'\"]+)['\"]");
+            Matcher itemMatcher = itemPattern.matcher(itemContent);
+            if (itemMatcher.find()) {
+                itemData.itemId = parseSimplifiedItemString(itemMatcher.group(1));
+            }
+
+            // 解析 potion 字段
+            Pattern potionPattern = Pattern.compile("potion:\\s*['\"]([^'\"]+)['\"]");
+            Matcher potionMatcher = potionPattern.matcher(itemContent);
+            if (potionMatcher.find()) {
+                itemData.potionValue = potionMatcher.group(1);
+            }
+        } else {
+            // 尝试匹配简单字符串格式: input: 'potion'
+            Pattern simplePattern = Pattern.compile(fieldName + ":\\s*['\"]([^'\"]+)['\"]");
+            Matcher simpleMatcher = simplePattern.matcher(content);
+            if (simpleMatcher.find()) {
+                itemData.itemId = parseSimplifiedItemString(simpleMatcher.group(1));
+            }
+        }
+    }
+
+    /**
+     * 解析简化格式的材料部分
+     */
+    private void parseSimplifiedMaterial(String content, SimplifiedBrewingRecipe recipe) {
+        Pattern materialPattern = Pattern.compile("material:\\s*['\"]([^'\"]+)['\"]");
+        Matcher materialMatcher = materialPattern.matcher(content);
+
+        if (materialMatcher.find()) {
+            recipe.materialItem = parseSimplifiedItemString(materialMatcher.group(1));
+        }
+    }
+
+    /**
+     * 解析简化格式的物品字符串
+     */
+    private String parseSimplifiedItemString(String itemString) {
+        itemString = itemString.trim().toLowerCase();
+
+        // 处理常见的物品名称映射
+        return switch (itemString) {
+            case "potion" -> "potion";
+            case "splash_potion" -> "splash_potion";
+            case "lingering_potion" -> "lingering_potion";
+            case "gunpowder" -> "gunpowder";
+            case "dragon_breath" -> "dragon_breath";
+            case "emerald" -> "emerald";
+            case "glowstone_dust" -> "glowstone_dust";
+            case "redstone" -> "redstone";
+            case "fermented_spider_eye" -> "fermented_spider_eye";
+            case "nether_wart" -> "nether_wart";
+            case "obsidian" -> "obsidian";
+            default -> itemString;
+        };
+    }
+
+    /**
+     * 注册简化格式的酿造配方
+     */
+    private void registerSimplifiedBrewingRecipe(SimplifiedBrewingRecipe recipe, String fileName, int recipeNumber, FabricBrewingRecipeRegistryBuilder builder) {
+        try {
+            Item inputItem = getItemById(recipe.input.itemId);
+            Item materialItem = getItemById(recipe.materialItem);
+            Item outputItem = getItemById(recipe.output.itemId);
+
+            if (inputItem != null && materialItem != null && outputItem != null) {
+                RegistryEntry<Potion> inputPotion = recipe.input.potionValue != null ?
+                        CustomPotionRegistry.getPotion(recipe.input.potionValue) : null;
+                RegistryEntry<Potion> outputPotion = recipe.output.potionValue != null ?
+                        CustomPotionRegistry.getPotion(recipe.output.potionValue) : null;
+
+                Ingredient ingredient = Ingredient.ofItems(materialItem);
+
+                if (isPotionConversionRecipe(inputItem, outputItem, inputPotion, outputPotion)) {
+                    registerPotionConversionRecipe(builder, inputPotion, ingredient, outputPotion);
+                } else if (isItemConversionRecipe(inputItem, outputItem)) {
+                    registerItemConversionRecipe(builder, inputItem, ingredient, outputItem);
+                } else {
+                    LOGGER.warn("无法识别的简化配方类型: {} -> {}", recipe.input.itemId, recipe.output.itemId);
+                    return;
+                }
+
+                registeredRecipeCount++;
+                LOGGER.info("已注册简化酿造配方 #{}: {} + {} -> {} (来自 {})",
+                        recipeNumber, recipe.input.itemId, recipe.materialItem, recipe.output.itemId, fileName);
+            } else {
+                simplifiedRecipe(recipe);
+            }
+
+        } catch (Exception e) {
+            LOGGER.error("注册简化酿造配方 #{} 时出错: {}", recipeNumber, e.getMessage(), e);
+        }
+    }
+
+    private static void simplifiedRecipe(SimplifiedBrewingRecipe recipe) {
+        LOGGER.warn("无法找到物品: input={}, material={}, output={}",
+                recipe.input.itemId, recipe.materialItem, recipe.output.itemId);
+    }
+
+    private static void legendaryRecipe(LegacyBrewingRecipe recipe) {
+        TestAnnMod.LOGGER.warn("无法找到物品: input={}, material={}, output={}",
+                recipe.input.itemId, recipe.materialItem, recipe.output.itemId);
+    }
+
+
+
+    /**
+     * 根据ID获取物品
+     */
+    private Item getItemById(String itemId) {
+        try {
+            // 首先尝试原版物品
+            if (itemId.contains(":")) {
+                return Registries.ITEM.get(Identifier.of(itemId));
+            } else {
+                // 没有命名空间的默认为原版
+                return Registries.ITEM.get(Identifier.of("minecraft", itemId));
+            }
+        } catch (Exception e) {
+            LOGGER.warn("无法获取物品: {}", itemId);
+            return null;
+        }
+    }
+
+    // 配方类型判断方法
     private boolean isPotionConversionRecipe(Item inputItem, Item outputItem, RegistryEntry<Potion> inputPotion, RegistryEntry<Potion> outputPotion) {
         return inputItem == outputItem && inputPotion != null && outputPotion != null;
     }
 
-    /**
-     * 判断是否为物品类型转换配方
-     */
     private boolean isItemConversionRecipe(Item inputItem, Item outputItem) {
         return inputItem != outputItem && isPotionItem(inputItem) && isPotionItem(outputItem);
     }
 
-    /**
-     * 判断是否为药水物品
-     */
     private boolean isPotionItem(Item item) {
         return item == Items.POTION || item == Items.SPLASH_POTION || item == Items.LINGERING_POTION;
     }
 
-    /**
-     * 注册药水效果转换配方
-     */
+    // 配方注册方法
     private void registerPotionConversionRecipe(FabricBrewingRecipeRegistryBuilder builder,
                                                 RegistryEntry<Potion> inputPotion,
                                                 Ingredient ingredient,
@@ -356,9 +527,6 @@ public class EnhancedBrewingRecipeParser {
         }
     }
 
-    /**
-     * 注册物品类型转换配方
-     */
     private void registerItemConversionRecipe(FabricBrewingRecipeRegistryBuilder builder,
                                               Item inputItem,
                                               Ingredient ingredient,
@@ -372,18 +540,12 @@ public class EnhancedBrewingRecipeParser {
         }
     }
 
-    /**
-     * 获取药水名称
-     */
+    // 辅助方法
     private String getPotionName(RegistryEntry<Potion> potion) {
         return potion.getKey().map(key -> key.getValue().toString()).orElse("unknown");
     }
 
-    /**
-     * 获取 Ingredient 名称（简化版，实际使用时可能需要更复杂的逻辑）
-     */
     private String getIngredientName(Ingredient ingredient) {
-        // 简化处理：获取第一个匹配的物品作为名称
         ItemStack[] stacks = ingredient.getMatchingStacks();
         if (stacks.length > 0) {
             return Registries.ITEM.getId(stacks[0].getItem()).toString();
@@ -391,27 +553,45 @@ public class EnhancedBrewingRecipeParser {
         return "unknown_ingredient";
     }
 
-    /**
-     * 获取已注册的配方数量
-     */
     public int getRecipeCount() {
         return registeredRecipeCount;
     }
 
-    // 内部类用于存储配方数据
-    private static class BrewingRecipe {
-        ItemData input = new ItemData();
+    public void reloadBrewingRecipes() {
+        LOGGER.info("重新加载酿造配方 for mod: {}", modId);
+        loadBrewingRecipes();
+    }
+
+    // 传统格式的数据结构
+    private static class LegacyBrewingRecipe {
+        LegacyItemData input = new LegacyItemData();
         String materialItem;
-        ItemData output = new ItemData();
+        LegacyItemData output = new LegacyItemData();
 
         boolean isValid() {
             return input.itemId != null && materialItem != null && output.itemId != null;
         }
     }
 
-    private static class ItemData {
+    private static class LegacyItemData {
         String itemId;
-        String potionValue; // 药水效果值
+        String potionValue;
         Map<String, String> components = new HashMap<>();
+    }
+
+    // 简化格式的数据结构
+    private static class SimplifiedBrewingRecipe {
+        SimplifiedItemData input = new SimplifiedItemData();
+        String materialItem;
+        SimplifiedItemData output = new SimplifiedItemData();
+
+        boolean isValid() {
+            return input.itemId != null && materialItem != null && output.itemId != null;
+        }
+    }
+
+    private static class SimplifiedItemData {
+        String itemId;
+        String potionValue;
     }
 }
