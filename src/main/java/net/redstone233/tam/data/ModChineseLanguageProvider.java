@@ -29,6 +29,7 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("category.tam.background", "背景设置");
         translationBuilder.add("category.tam.content", "内容设置");
         translationBuilder.add("category.tam.extend", "扩展设置");
+        translationBuilder.add("category.tam.system", "系统信息");
 
         // 选项
         translationBuilder.add("option.tam.show_on_world_enter", "进入世界时显示公告");
@@ -89,6 +90,9 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("key.tam.open_config", "打开公告模组配置界面");
         translationBuilder.add("key.tam.use_ability", "使用武器技能");
         translationBuilder.add("category.tam", "TAM模组");
+
+
+        translationBuilder.add("description.tam.commands", "使用 §l§b/announcement§r 指令以获取更多信息");
 
         // 超级熔炉 - 使用正确的键名格式
         translationBuilder.add("tam.ponder.super_furnace.header", "超级熔炉建造指南");

@@ -28,16 +28,19 @@ public class ClientConfig {
 
     // ==================== 扩展设置 ====================
     private static void setupExtendSettings() {
+        ClientConfig.BUILDER.push("extend");
+
         IS_ON_PONDER = ClientConfig.BUILDER
                 .comment("是否启用思索提醒")
                 .define("isOnPonder", true);
 
         BREWING_ENABLED = ClientConfig.BUILDER
-                .comment("是否启用脚本添加酿造配方")
+                .comment("是否启用解析器添加酿造配方")
                 .define("customBrewingEnabled", true);
 
         ClientConfig.BUILDER.pop();
     }
+
 
     // ==================== 显示设置 ====================
     private static void setupDisplaySettings() {

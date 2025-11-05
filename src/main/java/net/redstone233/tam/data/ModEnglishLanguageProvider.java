@@ -29,6 +29,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("category.tam.background", "Background Settings");
         translationBuilder.add("category.tam.content", "Content Settings");
         translationBuilder.add("category.tam.extend", "Extend Settings");
+        translationBuilder.add("category.tam.system", "System Status");
 
         // 选项
         translationBuilder.add("option.tam.show_on_world_enter", "Show on World Enter");
@@ -111,6 +112,8 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("commands.tam.debug.icon.disabled", "disabled");
         translationBuilder.add("commands.tam.debug.background.enabled", "enabled");
         translationBuilder.add("commands.tam.debug.background.disabled", "disabled");
+
+        translationBuilder.add("description.tam.commands", "Use §l§b/announcement§r to get more information.");
 
         // Super Furnace - 使用正确的键名格式
         translationBuilder.add("tam.ponder.super_furnace.header", "Super Furnace Construction Guide");

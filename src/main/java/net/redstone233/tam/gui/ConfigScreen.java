@@ -3,6 +3,8 @@ package net.redstone233.tam.gui;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.MinecraftVersion;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.redstone233.tam.TestAnnMod;
@@ -29,6 +31,7 @@ public class ConfigScreen {
         setupBackgroundCategory(builder, entryBuilder);
         setupContentCategory(builder, entryBuilder);
         setupExtendCategory(builder, entryBuilder);
+        setupSystemCategory(builder, entryBuilder);
 
         return builder.build();
     }
@@ -74,14 +77,21 @@ public class ConfigScreen {
         ConfigCategory system = builder.getOrCreateCategory(Text.translatable("category.tam.system"));
         system.addEntry(entryBuilder.startTextDescription(Text.translatable("description.tam.commands"))
                 .build());
+        system.addEntry(entryBuilder.startTextDescription(Text.literal(getStackSystemStatus())).build());
 
     }
 
     private static String getStackSystemStatus() {
         try {
-            String ver = TestAnnMod.MOD_VERSION;
+            String ver = TestAnnMod.getModVersion();
+            String mcv = MinecraftVersion.create().getName();
+            String loaderVersion = FabricLoader.getInstance().getModContainer("fabricloader")
+                    .orElseThrow().getMetadata().getVersion().getFriendlyString();
+            String apiVersion = FabricLoader.getInstance().getModContainer("fabric-api")
+                    .orElseThrow().getMetadata().getVersion().toString();
 
-            return String.format("模组版本： %s", ver);
+            return String.format("模组版本：%s, \n游戏版本：%s, \n运行器版本：%s, \nAPI版本：%s",
+                    ver, mcv, loaderVersion, apiVersion);
         } catch (Exception e) {
             return "状态获取失败";
         }

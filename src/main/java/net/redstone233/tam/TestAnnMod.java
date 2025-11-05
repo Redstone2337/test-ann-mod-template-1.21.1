@@ -4,13 +4,15 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.util.Identifier;
 import net.redstone233.tam.armor.ModArmorMaterials;
 import net.redstone233.tam.commands.v1.BrewingRecipeCommand;
 import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
 import net.redstone233.tam.config.ConfigManager;
-import net.redstone233.tam.core.brewing.BrewingRecipeParser;
 import net.redstone233.tam.core.brewing.EnhancedBrewingRecipeParser;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
 import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
@@ -27,6 +29,8 @@ import net.redstone233.tam.transaction.CustomTrades;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
 public class TestAnnMod implements ModInitializer {
 	public static final String MOD_ID = "tam";
 
@@ -35,7 +39,7 @@ public class TestAnnMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final String MOD_VERSION = "0.1+build.10-live.1";
+    private static String MOD_VERSION;
 
     private EnhancedBrewingRecipeParser brewingParser;
 
@@ -45,6 +49,13 @@ public class TestAnnMod implements ModInitializer {
  */
 	@Override
 	public void onInitialize() {
+        Optional<ModContainer> modContainer = FabricLoader.getInstance().getModContainer(MOD_ID);
+        if (modContainer.isPresent()) {
+            ModMetadata metadata = modContainer.get().getMetadata();
+            String version = metadata.getVersion().getFriendlyString();
+            // 现在你可以使用 version 变量了，例如输出到日志
+            setModVersion(version);
+        }
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
@@ -79,11 +90,18 @@ public class TestAnnMod implements ModInitializer {
         // 注册调试命令与配方重载命令
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             DebugCommands.register(dispatcher);
+            LOGGER.info("模组调试命令注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+
+
             if (ConfigManager.isBrewingEnabled()) {
                 BrewingRecipeCommand.register(dispatcher, brewingParser);
+                LOGGER.info("模组自定义配方指令注册完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+            } else {
+                LOGGER.info("模组自定义配方指令未注册，因为酿造配方功能未启用，已自动进行跳过处理。");
             }
         });
-        LOGGER.info("模组命令注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        LOGGER.info("全部模组命令注册成功，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         // 注册人家加入事件
         PlayerJoinEvent.init();
@@ -109,7 +127,7 @@ public class TestAnnMod implements ModInitializer {
             brewingParser = new EnhancedBrewingRecipeParser(MOD_ID);
             LOGGER.info("增强的酿造配方解析器初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
         } else {
-            LOGGER.info("酿造配方关闭，增强的酿造配方解析器已被跳过，耗时： {}ms", System.currentTimeMillis() - startTime);
+            LOGGER.info("增强的酿造配方解析器未初始化，因为酿造配方功能未启用，已自动进行跳过处理。");
         }
 
         LOGGER.info("Test Announcement Mod initialized successfully");
@@ -122,6 +140,14 @@ public class TestAnnMod implements ModInitializer {
 
     public static Identifier id(String path) {
         return Identifier.of(MOD_ID, path);
+    }
+
+    public static String getModVersion() {
+        return MOD_VERSION;
+    }
+
+    public static void setModVersion(String modVersion) {
+        MOD_VERSION = modVersion;
     }
 
     /**
