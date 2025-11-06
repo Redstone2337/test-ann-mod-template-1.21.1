@@ -128,7 +128,7 @@ public final class ModJarZipExtractor {
         // 示例：解压 assets/mymod/data.zip
         result = extractSpecificZipOnCommandWithTime(modClass,
                 "assets/"+ TestAnnMod.MOD_ID +"/node_modules.zip",
-                FabricLoader.getInstance().getGameDir() + "/data/" + TestAnnMod.MOD_ID + "node_modules",
+                FabricLoader.getInstance().getGameDir() + "/data/" + TestAnnMod.MOD_ID + "/node_modules",
                 logger);
         operationCount++;
         if (result.success()) successCount++;
@@ -137,7 +137,7 @@ public final class ModJarZipExtractor {
         // 示例：复制 tsconfig.json
         result = copyFileFromJarOnCommandWithTime(modClass,
                 "assets/"+TestAnnMod.MOD_ID+"/tsconfig.json",
-                FabricLoader.getInstance().getGameDir() + "/data/" + TestAnnMod.MOD_ID + "scripts/tsconfig.json",
+                FabricLoader.getInstance().getGameDir() + "/data/" + TestAnnMod.MOD_ID + "/scripts/tsconfig.json",
                 logger);
         operationCount++;
         if (result.success()) successCount++;

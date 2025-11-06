@@ -12,6 +12,7 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.redstone233.tam.TestAnnMod;
 import net.redstone233.tam.config.ConfigManager;
 import net.redstone233.tam.core.tool.ModJarZipExtractor;
@@ -103,6 +104,7 @@ public class DebugCommands {
         boolean success = ModJarZipExtractor.dumpAllResourcesOnCommand(TestAnnMod.class, TestAnnMod.LOGGER);
 
         if (success) {
+            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.GREEN), false);
             source.sendMessage(Text.literal("资源文件已成功导出到配置目录"));
             return 1;
         } else {
