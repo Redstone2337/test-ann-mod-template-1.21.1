@@ -8,6 +8,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,6 +26,8 @@ import java.util.Objects;
 import static net.minecraft.server.command.CommandManager.*;
 
 public class DebugCommands {
+
+    private static final String data = FabricLoader.getInstance().getGameDir() + "/data/" + TestAnnMod.MOD_ID + "/scripts/brewing_recipes";
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("announcement")
@@ -104,9 +107,9 @@ public class DebugCommands {
         boolean success = ModJarZipExtractor.dumpAllResourcesOnCommand(TestAnnMod.class, TestAnnMod.LOGGER);
 
         if (success) {
-            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.BLUE), false);
-            source.sendMessage(Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.GREEN, Formatting.BOLD));
-            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.YELLOW), false);
+            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录：" + data).formatted(Formatting.BLUE), false);
+            source.sendMessage(Text.literal("资源文件已成功导出到配置目录："+data).formatted(Formatting.GREEN, Formatting.BOLD));
+            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录"+data).formatted(Formatting.YELLOW), false);
             return 1;
         } else {
             source.sendError(Text.literal("资源导出失败，请查看服务器日志"));
