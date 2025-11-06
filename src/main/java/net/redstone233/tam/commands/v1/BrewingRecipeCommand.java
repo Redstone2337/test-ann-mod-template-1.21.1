@@ -17,7 +17,7 @@ public class BrewingRecipeCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, EnhancedBrewingRecipeParser parser) {
         dispatcher.register(
-                literal("tam_brewing")
+                literal("brewing")
                         .requires(source -> source.hasPermissionLevel(2))
                         .then(literal("reload")
                                 .executes(context -> reloadRecipes(context, parser)))

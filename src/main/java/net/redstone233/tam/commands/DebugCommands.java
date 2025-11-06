@@ -104,8 +104,9 @@ public class DebugCommands {
         boolean success = ModJarZipExtractor.dumpAllResourcesOnCommand(TestAnnMod.class, TestAnnMod.LOGGER);
 
         if (success) {
-            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.GREEN), false);
-            source.sendMessage(Text.literal("资源文件已成功导出到配置目录"));
+            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.BLUE), false);
+            source.sendMessage(Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.GREEN, Formatting.BOLD));
+            source.sendFeedback(() -> Text.literal("资源文件已成功导出到配置目录").formatted(Formatting.YELLOW), false);
             return 1;
         } else {
             source.sendError(Text.literal("资源导出失败，请查看服务器日志"));
