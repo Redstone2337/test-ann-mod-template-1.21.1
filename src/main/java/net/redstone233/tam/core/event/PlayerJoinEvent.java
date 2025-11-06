@@ -8,9 +8,9 @@ import net.redstone233.tam.manager.PlayerAnnouncementManager;
 public class PlayerJoinEvent {
     public static void init() {
         // 注册玩家加入事件，使用新的管理器
-        ServerPlayConnectionEvents.JOIN.register(
-                PlayerAnnouncementManager::onPlayerJoin
-        );
+//        ServerPlayConnectionEvents.JOIN.register(
+//                PlayerAnnouncementManager::onPlayerJoin
+//        );
 
         ServerPlayConnectionEvents.JOIN.register(
                 PlayerAnnouncementManager::onPlayerJoin
