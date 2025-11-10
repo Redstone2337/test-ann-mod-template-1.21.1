@@ -40,9 +40,9 @@ public class BrewingRecipeCommand {
 
         for (int i = 0; i < recipes.size(); i++) {
             var recipe = recipes.get(i);
-            ItemStack input = recipe.getInput();
-            var ingredient = recipe.getIngredient();
-            ItemStack output = recipe.getOutput();
+            ItemStack input = recipe.input();
+            var ingredient = recipe.ingredient();
+            ItemStack output = recipe.output();
 
             String inputName = getItemDisplayName(input);
             String ingredientName = Registries.ITEM.getId(ingredient).toString();
