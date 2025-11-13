@@ -4,10 +4,14 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.redstone233.tam.armor.ModArmorMaterials;
 import net.redstone233.tam.commands.v1.BrewingRecipeCommand;
@@ -15,6 +19,7 @@ import net.redstone233.tam.commands.DebugCommands;
 import net.redstone233.tam.config.ClientConfig;
 import net.redstone233.tam.config.ConfigManager;
 import net.redstone233.tam.core.brewing.EnhancedBrewingRecipeParser;
+import net.redstone233.tam.core.brewing.RhinoBrewingRecipeParser;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
 import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
 import net.redstone233.tam.enchantment.ModEnchantmentEffects;
@@ -139,12 +144,18 @@ public class TestAnnMod implements ModInitializer {
             LOGGER.info("增强的酿造配方解析器未初始化，因为酿造配方功能未启用，已自动进行跳过处理。");
         }
 
-        LOGGER.info("Test Announcement Mod initialized successfully");
-        LOGGER.info("模组内容初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        RhinoBrewingRecipeParser.registerWithFabricToDataPack();
+        LOGGER.info("酿造配方的数据包注册完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             brewingParser.loadBrewingRecipes();
         });
+        LOGGER.info("酿造指定路径配方加载完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+        LOGGER.info("Test Announcement Mod initialized successfully");
+        LOGGER.info("模组内容初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+
+
     }
 
     public static Identifier id(String path) {
