@@ -140,18 +140,18 @@ public class TestAnnMod implements ModInitializer {
             LOGGER.info("增强的酿造配方解析器未初始化，因为酿造配方功能未启用，已自动进行跳过处理。");
         }
 
-        RhinoBrewingRecipeParser.registerWithFabricToDataPack();
-        LOGGER.info("酿造配方的数据包注册完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
-
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            brewingParser.loadBrewingRecipes();
-        });
-        LOGGER.info("酿造指定路径配方加载完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        if (ConfigManager.isBrewingRecipeToDatapack()) {
+            RhinoBrewingRecipeParser.registerWithFabricToDataPack();
+            LOGGER.info("酿造配方的数据包注册完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
+        }
 
         LOGGER.info("Test Announcement Mod initialized successfully");
         LOGGER.info("模组内容初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
 
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            brewingParser.loadBrewingRecipes();
+        });
     }
 
     public static Identifier id(String path) {

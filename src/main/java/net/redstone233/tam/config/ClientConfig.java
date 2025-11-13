@@ -40,7 +40,7 @@ public class ClientConfig {
 
         BREWING_RECIPE_TO_DATAPACK = ClientConfig.BUILDER
                 .comment("是否启用数据包添加配方")
-                .define("brewingRecipeDatapack", true);
+                .define("brewingRecipeDatapack", false);
 
         ClientConfig.BUILDER.pop();
     }
