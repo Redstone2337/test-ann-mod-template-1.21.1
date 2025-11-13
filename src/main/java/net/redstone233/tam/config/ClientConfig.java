@@ -38,6 +38,10 @@ public class ClientConfig {
                 .comment("是否启用解析器添加酿造配方")
                 .define("customBrewingEnabled", true);
 
+        BREWING_RECIPE_TO_DATAPACK = ClientConfig.BUILDER
+                .comment("是否启用数据包添加配方")
+                .define("brewingRecipeDatapack", true);
+
         ClientConfig.BUILDER.pop();
     }
 
@@ -196,6 +200,7 @@ public class ClientConfig {
     public static ModConfigSpec.ConfigValue<List<? extends String>> ANNOUNCEMENT_CONTENT;
     public static ModConfigSpec.ConfigValue<String> LAST_DISPLAYED_HASH;
     public static ModConfigSpec.BooleanValue BREWING_ENABLED;
+    public static ModConfigSpec.BooleanValue BREWING_RECIPE_TO_DATAPACK;
 
     static {
         // 按顺序初始化各个配置节

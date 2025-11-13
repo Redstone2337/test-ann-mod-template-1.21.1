@@ -39,6 +39,6 @@
         "cloth-config": ">=15.0.140"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"rhino": ">=2101.2.7-build.77"
 	}
 }

@@ -71,6 +71,14 @@ public class ConfigScreen {
                 .setTooltip(Text.translatable("tooltip.tam.brewing_enabled"))
                 .setSaveConsumer(ConfigManager::setBrewingRecipe)
                 .build());
+
+        extend.addEntry(entryBuilder.startBooleanToggle(Text.translatable("option.tam.brewing_to_datapack"),
+                        ConfigManager.isBrewingRecipeToDatapack())
+                .setDefaultValue(false)
+                .setTooltip(Text.translatable("tooltip.tam.brewing_to_datapack"))
+                .setSaveConsumer(ConfigManager::setBrewingRecipeDatapack)
+                .build());
+
     }
 
     private static void setupSystemCategory(ConfigBuilder builder, ConfigEntryBuilder entryBuilder) {

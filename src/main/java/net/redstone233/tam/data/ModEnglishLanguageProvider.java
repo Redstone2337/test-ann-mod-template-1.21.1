@@ -54,6 +54,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("option.tam.announcement_content", "Announcement Content");
         translationBuilder.add("option.tam.show_ponder", "Display Ponder Screen");
         translationBuilder.add("option.tam.brewing_enabled", "Enable Brewing Recipe");
+        translationBuilder.add("option.tam.brewing_to_datapack", "Brewing Recipe to Datapack(Needed Rhino)");
 
         // 工具提示
         translationBuilder.add("tooltip.tam.show_on_world_enter", "Whether to show announcement when player first enters the world");
@@ -78,6 +79,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tooltip.tam.announcement_content", "Specific content of the announcement, supports multiple lines and color codes");
         translationBuilder.add("tooltip.tam.show_ponder", "Whether to display the Ponder screen when the announcement is shown");
         translationBuilder.add("tooltip.tam.brewing_enabled", "Whether to enable the brewing recipe for the TAM item");
+        translationBuilder.add("tooltip.tam.brewing_to_datapack", "Whether the brew recipe is parsed through the datapack(Needed Rhino)");
 
         // 描述
         translationBuilder.add("description.tam.announcement_content", "One announcement content per line, supports Minecraft color codes (§)");

@@ -29,6 +29,10 @@ public class ConfigManager {
         return ClientConfig.BREWING_ENABLED.get();
     }
 
+    public static boolean isBrewingRecipeToDatapack() {
+        return ClientConfig.BREWING_RECIPE_TO_DATAPACK.get();
+    }
+
     // ==================== 显示设置 ====================
     public static String getMainTitle() {
         return ClientConfig.MAIN_TITLE.get();
@@ -357,6 +361,10 @@ public class ConfigManager {
 
     public static void setBrewingRecipe(boolean value) {
         ClientConfig.BREWING_ENABLED.set(value);
+    }
+
+    public static void setBrewingRecipeDatapack(boolean value) {
+        ClientConfig.BREWING_RECIPE_TO_DATAPACK.set(value);
     }
 
     /**

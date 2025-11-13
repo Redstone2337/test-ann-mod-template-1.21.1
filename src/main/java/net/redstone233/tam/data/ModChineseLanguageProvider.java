@@ -54,6 +54,7 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("option.tam.announcement_content", "公告内容");
         translationBuilder.add("option.tam.show_ponder", "显示思索界面");
         translationBuilder.add("option.tam.brewing_enabled", "启用酿造配方");
+        translationBuilder.add("option.tam.brewing_to_datapack", "启用数据包酿造配方解析(需要Rhino前置)");
 
         // 工具提示
         translationBuilder.add("tooltip.tam.show_on_world_enter", "是否在玩家首次进入世界时显示公告");
@@ -78,6 +79,7 @@ public class ModChineseLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("tooltip.tam.announcement_content", "公告的具体内容，支持多行和颜色代码");
         translationBuilder.add("tooltip.tam.show_ponder", "是否为玩家显示思索界面");
         translationBuilder.add("tooltip.tam.brewing_enabled", "是否启用酿造配方");
+        translationBuilder.add("tooltip.tam.brewing_to_datapack", "是否将酿造配方通过数据包解析(需要Rhino前置)");
 
         // 描述
         translationBuilder.add("description.tam.announcement_content", "每行一条公告内容，支持Minecraft颜色代码 (§)");
