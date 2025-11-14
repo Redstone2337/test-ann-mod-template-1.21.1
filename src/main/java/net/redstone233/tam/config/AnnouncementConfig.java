@@ -24,6 +24,7 @@ public class AnnouncementConfig {
     public String announcementBackgroundPath;
     public boolean showPonderScreen;
     public boolean brewingEnabled;
+    public boolean brewingRecipeToDatapack;
 
     public AnnouncementConfig() {
         // 空构造函数用于反序列化
@@ -104,6 +105,7 @@ public class AnnouncementConfig {
         // 扩展内容
         sb.append(showPonderScreen);
         sb.append(brewingEnabled);
+        sb.append(brewingRecipeToDatapack);
 
         // 使用更可靠的哈希算法
         return Integer.toHexString(Objects.hash(sb.toString()));

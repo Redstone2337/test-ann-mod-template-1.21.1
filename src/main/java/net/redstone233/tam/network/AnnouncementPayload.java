@@ -48,6 +48,7 @@ public record AnnouncementPayload(AnnouncementConfig config) implements CustomPa
         config.announcementBackgroundPath = buf.readString();
         config.showPonderScreen = buf.readBoolean();
         config.brewingEnabled = buf.readBoolean();
+        config.brewingRecipeToDatapack = buf.readBoolean();
 
         return new AnnouncementPayload(config);
     }
@@ -83,6 +84,7 @@ public record AnnouncementPayload(AnnouncementConfig config) implements CustomPa
         buf.writeString(config.announcementBackgroundPath != null ? config.announcementBackgroundPath : "");
         buf.writeBoolean(config.showPonderScreen);
         buf.writeBoolean(config.brewingEnabled);
+        buf.writeBoolean(config.brewingRecipeToDatapack);
     }
 
     @Override

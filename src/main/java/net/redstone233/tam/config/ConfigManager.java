@@ -202,6 +202,7 @@ public class ConfigManager {
         config.announcementBackgroundPath = getAnnouncementBackgroundPath();
         config.showPonderScreen = showPonderScreen();
         config.brewingEnabled = isBrewingEnabled();
+        config.brewingRecipeToDatapack = isBrewingRecipeToDatapack();
 
         return config;
     }
