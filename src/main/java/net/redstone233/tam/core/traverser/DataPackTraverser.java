@@ -90,13 +90,13 @@ public class DataPackTraverser {
                     TamVersionValidator.validateDatapackConfig(ops, input, datapackName);
             results.add(result);
 
-            if (result.isValid()) {
+            if (result.valid()) {
                 LOGGER.info("✓ 数据包 {} 验证通过", datapackName);
-                if (result.getMessage() != null && !result.getMessage().getString().isEmpty()) {
-                    LOGGER.info("  描述: {}", result.getMessage().getString());
+                if (result.message() != null && !result.message().getString().isEmpty()) {
+                    LOGGER.info("  描述: {}", result.message().getString());
                 }
             } else {
-                LOGGER.warn("✗ 数据包 {} 验证失败: {}", datapackName, result.getError());
+                LOGGER.warn("✗ 数据包 {} 验证失败: {}", datapackName, result.error());
             }
 
         } catch (Exception e) {
@@ -167,7 +167,7 @@ public class DataPackTraverser {
      * 获取验证结果统计信息
      */
     public static ValidationStats getValidationStats(List<TamVersionValidator.ValidationResult> results) {
-        long validCount = results.stream().filter(TamVersionValidator.ValidationResult::isValid).count();
+        long validCount = results.stream().filter(TamVersionValidator.ValidationResult::valid).count();
         long errorCount = results.size() - validCount;
 
         return new ValidationStats(results.size(), (int) validCount, (int) errorCount);

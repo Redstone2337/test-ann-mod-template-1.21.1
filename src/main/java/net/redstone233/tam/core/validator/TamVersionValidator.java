@@ -31,7 +31,7 @@ public class TamVersionValidator {
                 return ValidationResult.parseError(errorMsg);
             }
 
-            PackMcmeta config = parseResult.result().get();
+            PackMcmeta config = parseResult.result().orElseThrow();
             TamConfig tamConfig = config.tam();
 
             // 检查配置版本兼容性
@@ -97,58 +97,45 @@ public class TamVersionValidator {
      */
     public static <T> boolean isValidDatapack(DynamicOps<T> ops, T input, String datapackName) {
         ValidationResult result = validateDatapackConfig(ops, input, datapackName);
-        if (!result.isValid()) {
-            LOGGER.warn("数据包 {} 验证失败: {}", datapackName, result.getError());
+        if (!result.valid()) {
+            LOGGER.warn("数据包 {} 验证失败: {}", datapackName, result.error());
         }
-        return result.isValid();
+        return result.valid();
     }
 
-    public static class ValidationResult {
-        private final boolean valid;
-        private final Text message;
-        private final String error;
-
-        private ValidationResult(boolean valid, Text message, String error) {
-            this.valid = valid;
-            this.message = message;
-            this.error = error;
-        }
+    public record ValidationResult(boolean valid, Text message, String error) {
 
         public static ValidationResult success(Text message) {
-            return new ValidationResult(true, message, null);
-        }
-
-        public static ValidationResult missingConfig() {
-            return new ValidationResult(false, null, "缺少 pack.mcmeta 文件");
-        }
-
-        public static ValidationResult parseError(String error) {
-            return new ValidationResult(false, null, "解析错误: " + error);
-        }
-
-        public static ValidationResult incompatibleFormat(int format, TamConfig config) {
-            return new ValidationResult(false, null,
-                    String.format("数据包格式 %d 不兼容，支持的格式范围: %s",
-                            format, getSupportedFormatsString(config)));
-        }
-
-        private static String getSupportedFormatsString(TamConfig config) {
-            if (config.maxFormat().isPresent() && config.minFormat().isPresent()) {
-                return config.minFormat().get() + " - " + config.maxFormat().get();
-            } else if (config.tamFormat().isPresent()) {
-                return "固定格式: " + config.tamFormat().get();
-            } else if (config.supportedFormats().isPresent()) {
-                return "自定义格式范围";
+                return new ValidationResult(true, message, null);
             }
-            return "未知";
-        }
 
-        public static ValidationResult error(String error) {
-            return new ValidationResult(false, null, error);
-        }
+            public static ValidationResult missingConfig() {
+                return new ValidationResult(false, null, "缺少 pack.mcmeta 文件");
+            }
 
-        public boolean isValid() { return valid; }
-        public Text getMessage() { return message; }
-        public String getError() { return error; }
-    }
+            public static ValidationResult parseError(String error) {
+                return new ValidationResult(false, null, "解析错误: " + error);
+            }
+
+            public static ValidationResult incompatibleFormat(int format, TamConfig config) {
+                return new ValidationResult(false, null,
+                        String.format("数据包格式 %d 不兼容，支持的格式范围: %s",
+                                format, getSupportedFormatsString(config)));
+            }
+
+            private static String getSupportedFormatsString(TamConfig config) {
+                if (config.maxFormat().isPresent() && config.minFormat().isPresent()) {
+                    return config.minFormat().get() + " - " + config.maxFormat().get();
+                } else if (config.tamFormat().isPresent()) {
+                    return "固定格式: " + config.tamFormat().get();
+                } else if (config.supportedFormats().isPresent()) {
+                    return "自定义格式范围";
+                }
+                return "未知";
+            }
+
+            public static ValidationResult error(String error) {
+                return new ValidationResult(false, null, error);
+            }
+        }
 }

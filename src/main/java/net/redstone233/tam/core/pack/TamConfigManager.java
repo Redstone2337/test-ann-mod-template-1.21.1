@@ -82,22 +82,22 @@ public class TamConfigManager {
         if (stats.errors() > 0) {
             LOGGER.warn("失败的验证:");
             VALIDATION_RESULTS.stream()
-                    .filter(result -> !result.isValid())
-                    .forEach(result -> LOGGER.warn("  - {}", result.getError()));
+                    .filter(result -> !result.valid())
+                    .forEach(result -> LOGGER.warn("  - {}", result.error()));
         }
 
         // 显示成功的数据包信息
         long successfulWithDescription = VALIDATION_RESULTS.stream()
-                .filter(result -> result.isValid() && result.getMessage() != null &&
-                        !result.getMessage().getString().isEmpty())
+                .filter(result -> result.valid() && result.message() != null &&
+                        !result.message().getString().isEmpty())
                 .count();
 
         if (successfulWithDescription > 0) {
             LOGGER.info("成功验证的数据包描述:");
             VALIDATION_RESULTS.stream()
-                    .filter(result -> result.isValid() && result.getMessage() != null &&
-                            !result.getMessage().getString().isEmpty())
-                    .forEach(result -> LOGGER.info("  - {}", result.getMessage().getString()));
+                    .filter(result -> result.valid() && result.message() != null &&
+                            !result.message().getString().isEmpty())
+                    .forEach(result -> LOGGER.info("  - {}", result.message().getString()));
         }
 
         LOGGER.info("=== 报告结束 ===");
@@ -114,7 +114,7 @@ public class TamConfigManager {
      * 检查是否有验证失败的数据包
      */
     public static boolean hasValidationErrors() {
-        return VALIDATION_RESULTS.stream().anyMatch(result -> !result.isValid());
+        return VALIDATION_RESULTS.stream().anyMatch(result -> !result.valid());
     }
 
     /**
@@ -122,7 +122,7 @@ public class TamConfigManager {
      */
     public static List<TamVersionValidator.ValidationResult> getSuccessfulValidations() {
         return VALIDATION_RESULTS.stream()
-                .filter(TamVersionValidator.ValidationResult::isValid)
+                .filter(TamVersionValidator.ValidationResult::valid)
                 .toList();
     }
 
@@ -131,7 +131,7 @@ public class TamConfigManager {
      */
     public static List<TamVersionValidator.ValidationResult> getFailedValidations() {
         return VALIDATION_RESULTS.stream()
-                .filter(result -> !result.isValid())
+                .filter(result -> !result.valid())
                 .toList();
     }
 
