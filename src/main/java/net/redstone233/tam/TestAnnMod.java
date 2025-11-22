@@ -18,6 +18,7 @@ import net.redstone233.tam.core.brewing.EnhancedBrewingRecipeParser;
 import net.redstone233.tam.core.brewing.RhinoBrewingRecipeParser;
 import net.redstone233.tam.core.event.PlayerJoinEvent;
 import net.redstone233.tam.core.mod.SuperFurnaceRegistration;
+import net.redstone233.tam.core.pack.TamConfigManager;
 import net.redstone233.tam.enchantment.ModEnchantmentEffects;
 import net.redstone233.tam.enchantment.ModEnchantments;
 import net.redstone233.tam.item.ModItemGroups;
@@ -144,6 +145,9 @@ public class TestAnnMod implements ModInitializer {
             RhinoBrewingRecipeParser.registerWithFabricToDataPack();
             LOGGER.info("酿造配方的数据包注册完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
         }
+
+        TamConfigManager.initialize();
+        LOGGER.info("TAM 管理器初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
 
         LOGGER.info("Test Announcement Mod initialized successfully");
         LOGGER.info("模组内容初始化完成，总耗时 {}ms", System.currentTimeMillis() - startTime);
