@@ -167,6 +167,7 @@ public class ClientConfig {
                                 "§b模组随缘更新",
                                 "§c若发现bug可以向模组作者或者仓库反馈！"
                         ),
+                        () -> "",
                         ClientConfig::validateString);
 
         LAST_DISPLAYED_HASH = ClientConfig.BUILDER
